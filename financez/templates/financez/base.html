@@ -1,0 +1,30 @@
+{% load static %}
+
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'financez/main.css' %}">
+</head>
+
+<body>
+
+    <div class="header-menu">
+        <a class="menu-item">
+            Main book
+        </a>
+        <a class="menu-item">
+            Reports
+        </a>
+    </div>
+
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+
+</html>
