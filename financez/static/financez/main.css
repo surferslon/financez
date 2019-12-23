@@ -3,14 +3,14 @@ html {
 }
 .header-menu {
     display: grid;
-    grid-template-columns: 50% 50% ;
+    grid-template-columns: 33% 33% 33%;
     border-bottom: 1px solid #dbdbdb;
     height: 30px;
 }
 .menu-item {
     text-align: center;
 }
-.content {
+.main-book-wrapper {
     display: flex;
     justify-content: center;
     margin-top: 20px;
@@ -18,8 +18,48 @@ html {
 
 .main-book {
     border: 1px solid grey;
-    width: 60%;
+    width: 70%;
     height: 400px;
     display: grid;
-    grid-template-columns: 10% 15% 15% 15% 15% 15%;
+    grid-template-columns: 20% 15% 15% 15% 15% 20%;
+}
+@media screen and (max-width: 1200px) {
+   .main-book {
+        width: 95%;
+   }
+}
+.main-book-head {
+    height: 15px;
+    padding: 5px;
+    border-bottom: 1px solid grey;
+}
+.main-book-item {
+    height: 30px;
+    padding: 5px;
+}
+.break {
+    flex-basis: 100%;
+    height: 0;
+}
+.new-entry-form {
+    display: grid;
+    grid-template-columns: 20% 15% 15% 15% 15% 20%;
+    width: 70%;
+    grid-row-gap: 10px;
+}
+.new-entry-form input {
+    border: 1px solid #dbdbdb;
+    height: 25px;
+    width: 95%;
+    box-sizing: border-box;
+}
+.new-entry-form select {
+    border: 1px solid #dbdbdb;
+    height: 25px;
+    width: 95%;
+}
+@media screen and (max-width: 1200px) {
+    .new-entry-form {
+        width: 95%
+    }
 }

@@ -1,14 +1,40 @@
 {% extends "financez/base.html" %}
 
 {% block content %}
-    <div class="main-book">
+    <div class="main-book-wrapper">
+        <div class="main-book">
 
-        <div>Date</div>
-        <div>DR</div>
-        <div>CR</div>
-        <div>Sum</div>
-        <div>Currency</div>
-        <div>Comment</div>
+            <div class="main-book-head">Date</div>
+            <div class="main-book-head">DR</div>
+            <div class="main-book-head">CR</div>
+            <div class="main-book-head">Sum</div>
+            <div class="main-book-head">Currency</div>
+            <div class="main-book-head">Comment</div>
+
+            {% for entry in entries %}
+                <div class="main-book-item">{{ entry.date }}</div>
+                <div class="main-book-item">{{ entry.acc_dr }}</div>
+                <div class="main-book-item">{{ entry.acc_cr }}</div>
+                <div class="main-book-item">{{ entry.total }}</div>
+                <div class="main-book-item">{{ entry.currency }}</div>
+                <div class="main-book-item">{{ entry.comment }}</div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+    <div class="main-book-wrapper">
+        <form method="POST" class="new-entry-form">
+            {% csrf_token %}
+            {{ form.date }}
+            {{ form.acc_dr }}
+            {{ form.acc_cr }}
+            {{ form.total }}
+            {{ form.currency }}
+            {{ form.comment }}
+            <button>Add</button>
+        </form>
 
     </div>
 {% endblock %}
