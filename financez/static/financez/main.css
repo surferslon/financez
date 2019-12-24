@@ -1,6 +1,11 @@
 html {
     font-family: monospace;
 }
+a {
+    text-decoration: none;
+    color: black;
+}
+
 .header-menu {
     display: grid;
     grid-template-columns: 33% 33% 33%;
@@ -10,32 +15,46 @@ html {
 .menu-item {
     text-align: center;
 }
-.main-book-wrapper {
+
+.row {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+}
+
+.results {
+    padding: 20px 0px 20px 0px;
+    display: grid;
+    width: 70%;
+    grid-template-columns: 20% 20%;
 }
 
 .main-book {
-    border: 1px solid grey;
+    overflow: hidden;
+    overflow-y: auto;
+    /*border: 1px solid #dbdbdb;*/
     width: 70%;
-    height: 400px;
+    height: 600px;
     display: grid;
-    grid-template-columns: 20% 15% 15% 15% 15% 20%;
+    grid-template-columns: 13% 19% 15% 8% 10% 35%;
+}
+.main-book-header {
+    height: 15px;
+    width: 70%;
+    padding: 5px;
+    display: grid;
+    grid-template-columns: 13% 19% 15% 8% 10% 35%;
+    border: 1px solid #dbdbdb;
 }
 @media screen and (max-width: 1200px) {
    .main-book {
         width: 95%;
    }
-}
-.main-book-head {
-    height: 15px;
-    padding: 5px;
-    border-bottom: 1px solid grey;
+   .main-book-header {
+        width: 95%;
+   }
 }
 .main-book-item {
-    height: 30px;
-    padding: 5px;
+
 }
 .break {
     flex-basis: 100%;
@@ -43,23 +62,60 @@ html {
 }
 .new-entry-form {
     display: grid;
-    grid-template-columns: 20% 15% 15% 15% 15% 20%;
+    grid-template-columns: 13% 19% 15% 8% 10% 35%;
     width: 70%;
     grid-row-gap: 10px;
+    margin: 20px 0px 20px 0px;
 }
 .new-entry-form input {
     border: 1px solid #dbdbdb;
     height: 25px;
-    width: 95%;
     box-sizing: border-box;
+    width: 100%;
 }
 .new-entry-form select {
     border: 1px solid #dbdbdb;
     height: 25px;
-    width: 95%;
+    background: white;
+    width: 100%;
+}
+.new-entry-form button {
+    border: 1px solid #dbdbdb;
+    height: 25px;
+    grid-column: 6/6;
+    width: 40%;
 }
 @media screen and (max-width: 1200px) {
     .new-entry-form {
         width: 95%
     }
+}
+
+.account-selector {
+    display: none;
+    top: 0;
+    left: 0;
+    /*z-index: 10;*/
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-color:rgba(0, 0, 0, 0.5);
+}
+.accounts-list {
+    width: 50%;
+    height: 600px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-areas:
+        "a b"
+        "c b"
+        "e b"
+        "f b" ;
+    background: white;
+    overflow: hidden;
+    overflow-y: auto;
+    z-index: 100;
+}
+.nested {
+    /*display: none;*/
 }

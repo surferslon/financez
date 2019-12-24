@@ -1,30 +1,20 @@
 {% extends "financez/base.html" %}
+{% load static %}
 
 {% block content %}
-    <div class="main-book-wrapper">
-        <div class="main-book">
 
-            <div class="main-book-head">Date</div>
-            <div class="main-book-head">DR</div>
-            <div class="main-book-head">CR</div>
-            <div class="main-book-head">Sum</div>
-            <div class="main-book-head">Currency</div>
-            <div class="main-book-head">Comment</div>
-
-            {% for entry in entries %}
-                <div class="main-book-item">{{ entry.date }}</div>
-                <div class="main-book-item">{{ entry.acc_dr }}</div>
-                <div class="main-book-item">{{ entry.acc_cr }}</div>
-                <div class="main-book-item">{{ entry.total }}</div>
-                <div class="main-book-item">{{ entry.currency }}</div>
-                <div class="main-book-item">{{ entry.comment }}</div>
-            {% endfor %}
-
+    <div class="row">
+        <div class="results">
+            <label>Assets</label>
+            <label>{{ assets_sum|floatformat:3 }}</label>
+            <label>Savings</label>
+            <label>{{ savings_sum|floatformat:3 }}</label>
+            <label>Debts</label>
+            <label>{{ debts_sum|floatformat:3 }}</label>
         </div>
     </div>
 
-
-    <div class="main-book-wrapper">
+    <div class="row">
         <form method="POST" class="new-entry-form">
             {% csrf_token %}
             {{ form.date }}
@@ -35,6 +25,53 @@
             {{ form.comment }}
             <button>Add</button>
         </form>
-
     </div>
+
+    <div class="row">
+        <div class="main-book-header">
+            <div>Date</div>
+            <div>DR</div>
+            <div>CR</div>
+            <div style="text-align: right">Sum</div>
+            <div style="text-align: center">Currency</div>
+            <div>Comment</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="main-book">
+            {% for entry in entries %}
+                <div class="main-book-item">{{ entry.date|date:"Y M d"  }}</div>
+                <div class="main-book-item">{{ entry.acc_dr }}</div>
+                <div class="main-book-item">{{ entry.acc_cr }}</div>
+                <div class="main-book-item" style="text-align: right">{{ entry.total|floatformat:3 }}</div>
+                <div class="main-book-item" style="text-align: center">{{ entry.currency }}</div>
+                <div class="main-book-item">{{ entry.comment }}</div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row" >
+        {% for page_num in pages %}
+            <a href="{% url 'main_book' %}?page={{ page_num }}" style="padding: 10px 2px 0px 2px">{{ page_num }}</a>
+        {% endfor %}
+    </div>
+
+    <div id="account-selector" class="account-selector">
+        <div class="row" style="height: 100%; align-items: center">
+            <div class="accounts-list">
+                <input hidden id="acc_type"></input>
+                <div style="grid-area: a"> {% include 'financez/account_list.html' with account_list=accounts_assets title="Assets" %} </div>
+                <div style="grid-area: b"> {% include 'financez/account_list.html' with account_list=accounts_expenses title="Expenses" %} </div>
+                <div style="grid-area: c"> {% include 'financez/account_list.html' with account_list=accounts_planning title="Planning" %} </div>
+                <div style="grid-area: e"> {% include 'financez/account_list.html' with account_list=accounts_incomes title="Incomes" %} </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'financez/main_book.js' %}"></script>
 {% endblock %}

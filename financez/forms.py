@@ -13,3 +13,7 @@ class NewEntryForm(forms.ModelForm):
     class Meta:
         model = Entry
         fields = ['date', 'acc_dr', 'acc_cr', 'total', 'currency', 'comment']
+        # widgets = {
+        #     'acc_cr': forms.TextInput,
+        #     'acc_dr': forms.TextInput
+        # }
