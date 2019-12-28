@@ -1,11 +1,16 @@
 html {
     font-family: monospace;
+    color: #2f2f2f;
 }
 a {
     text-decoration: none;
     color: black;
 }
-
+hr {
+    color: white;
+    width: 70%;
+    border-top: 1px solid #dbdbdb;
+}
 .header-menu {
     display: grid;
     grid-template-columns: 33% 33% 33%;
@@ -21,101 +26,3 @@ a {
     justify-content: center;
 }
 
-.results {
-    padding: 20px 0px 20px 0px;
-    display: grid;
-    width: 70%;
-    grid-template-columns: 20% 20%;
-}
-
-.main-book {
-    overflow: hidden;
-    overflow-y: auto;
-    /*border: 1px solid #dbdbdb;*/
-    width: 70%;
-    height: 600px;
-    display: grid;
-    grid-template-columns: 13% 19% 15% 8% 10% 35%;
-}
-.main-book-header {
-    height: 15px;
-    width: 70%;
-    padding: 5px;
-    display: grid;
-    grid-template-columns: 13% 19% 15% 8% 10% 35%;
-    border: 1px solid #dbdbdb;
-}
-@media screen and (max-width: 1200px) {
-   .main-book {
-        width: 95%;
-   }
-   .main-book-header {
-        width: 95%;
-   }
-}
-.main-book-item {
-
-}
-.break {
-    flex-basis: 100%;
-    height: 0;
-}
-.new-entry-form {
-    display: grid;
-    grid-template-columns: 13% 19% 15% 8% 10% 35%;
-    width: 70%;
-    grid-row-gap: 10px;
-    margin: 20px 0px 20px 0px;
-}
-.new-entry-form input {
-    border: 1px solid #dbdbdb;
-    height: 25px;
-    box-sizing: border-box;
-    width: 100%;
-}
-.new-entry-form select {
-    border: 1px solid #dbdbdb;
-    height: 25px;
-    background: white;
-    width: 100%;
-}
-.new-entry-form button {
-    border: 1px solid #dbdbdb;
-    height: 25px;
-    grid-column: 6/6;
-    width: 40%;
-}
-@media screen and (max-width: 1200px) {
-    .new-entry-form {
-        width: 95%
-    }
-}
-
-.account-selector {
-    display: none;
-    top: 0;
-    left: 0;
-    /*z-index: 10;*/
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    background-color:rgba(0, 0, 0, 0.5);
-}
-.accounts-list {
-    width: 50%;
-    height: 600px;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-areas:
-        "a b"
-        "c b"
-        "e b"
-        "f b" ;
-    background: white;
-    overflow: hidden;
-    overflow-y: auto;
-    z-index: 100;
-}
-.nested {
-    /*display: none;*/
-}

@@ -1,18 +1,57 @@
 {% extends "financez/base.html" %}
 {% load static %}
 
+{% block extra_styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'financez/index.css' %}">
+{% endblock %}
+
 {% block content %}
 
     <div class="row">
         <div class="results">
-            <label>Assets</label>
-            <label>{{ assets_sum|floatformat:3 }}</label>
-            <label>Savings</label>
-            <label>{{ savings_sum|floatformat:3 }}</label>
-            <label>Debts</label>
-            <label>{{ debts_sum|floatformat:3 }}</label>
+            <div class="results-block">
+                <div class="results-header">Results</div>
+                <label>Assets</label>
+                <label>{{ assets_sum|floatformat:3 }}</label>
+                <label>Savings</label>
+                <label>{{ savings_sum|floatformat:3 }}</label>
+                <label>Debts</label>
+                <label>{{ debts_sum|floatformat:3 }}</label>
+            </div>
+            <div class="results-block">
+                <div class="results-header">Planning</div>
+                <label>Food</label>
+                <label>{{ planning_food }}</label>
+                <label>Transport</label>
+                <label>{{ planning_transport }}</label>
+                <label>Payments</label>
+                <label>{{ planning_payments }}</label>
+                <label>Unscheduled</label>
+                <label>{{ planning_unscheduled }}</label>
+            </div>
+            <div class="results-block">
+                <div class="results-header">Debts</div>
+                {% for debt in debts_queryset %}
+                    {% widthratio debt.total 1 -1 as total_debt %}
+                    <label>{{ debt.acc.name }}</label>
+                    <label>{{ total_debt|floatformat:3 }} </label>
+                {% empty %}
+                    <label>-</label>
+                {% endfor %}
+            </div>
+            <div class="results-block">
+                <div class="results-header">{{ current_month|date:"M Y" }}</div>
+                <span>Incomes</span>
+                <span>{{ incomes_sum|floatformat:3 }}</span>
+                <span>Expenses</span>
+                <span>{{ expenses_sum|floatformat:3 }} </span>
+                <span>Result</span>
+                <span>{{ month_result|floatformat:3 }} </span>
+            </div>
         </div>
     </div>
+
+    <hr>
 
     <div class="row">
         <form method="POST" class="new-entry-form">
@@ -50,21 +89,12 @@
             {% endfor %}
         </div>
     </div>
-    <div class="row" >
-        {% for page_num in pages %}
-            <a href="{% url 'main_book' %}?page={{ page_num }}" style="padding: 10px 2px 0px 2px">{{ page_num }}</a>
-        {% endfor %}
-    </div>
 
     <div id="account-selector" class="account-selector">
         <div class="row" style="height: 100%; align-items: center">
             <div class="accounts-list">
                 <input hidden id="acc_type"></input>
-                <div style="grid-area: a"> {% include 'financez/account_list.html' with account_list=accounts_assets title="Assets" %} </div>
-                <div style="grid-area: b"> {% include 'financez/account_list.html' with account_list=accounts_expenses title="Expenses" %} </div>
-                <div style="grid-area: c"> {% include 'financez/account_list.html' with account_list=accounts_planning title="Planning" %} </div>
-                <div style="grid-area: e"> {% include 'financez/account_list.html' with account_list=accounts_incomes title="Incomes" %} </div>
-
+                <div> {% include 'financez/account_list.html' with account_list=account_list title="Accounts" %} </div>
             </div>
         </div>
     </div>

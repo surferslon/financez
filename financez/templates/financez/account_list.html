@@ -6,8 +6,8 @@
 
     <ul {% if nested %} class="nested" {% endif %}>
     {% for acc in account_list %}
-        <li class="acc-item" data-accpk="{{ acc.pk }}">{{ acc.name }}
-            {% include 'financez/account_list.html' with account_list=acc.account_set.all nested=True title='' %}
+        <li class="acc-item" data-accpk="{{ acc.id }}">{{ acc.name }}
+            {% include 'financez/account_list.html' with account_list=acc.subaccs nested=True title='' %}
         </li>
     {% endfor %}
     </ul>

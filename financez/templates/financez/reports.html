@@ -1,0 +1,26 @@
+{% extends 'financez/base.html' %}
+{% load static %}
+
+
+{% block extra_styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'financez/reports.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="dx-viewport">
+        <div class="demo-container" data-url="{% url 'report_data' %}">
+            <div id="chart" style="height: 750px"></div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="{% static 'financez/reports.js' %}"></script>
+    <!-- DevExtreme themes -->
+    <link rel="stylesheet" href="{% static 'financez/devextreme/css/dx.common.css' %}">
+    <link rel="stylesheet" href="{% static 'financez/devextreme/css/dx.light.css' %}">
+    <!-- DevExtreme library -->
+    <script type="text/javascript" src="{% static 'financez/devextreme/js/dx.all.js' %}"></script>
+{% endblock %}
