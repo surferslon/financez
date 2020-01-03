@@ -19,6 +19,7 @@
 .main-book {
     overflow: hidden;
     overflow-y: auto;
+    grid-auto-rows: max-content;
     /*border: 1px solid #dbdbdb;*/
     width: 70%;
     height: 600px;
@@ -56,21 +57,12 @@
     margin: 20px 0px 20px 0px;
 }
 .new-entry-form input {
-    border: 1px solid #dbdbdb;
-    height: 25px;
-    box-sizing: border-box;
     width: 100%;
 }
 .new-entry-form select {
-    border: 1px solid #dbdbdb;
-    height: 25px;
-    background: white;
     width: 100%;
 }
-.new-entry-form button {
-    border: 1px solid #dbdbdb;
-    height: 25px;
-}
+
 @media screen and (max-width: 1200px) {
     .new-entry-form {
         width: 95%

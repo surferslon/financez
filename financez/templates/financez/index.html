@@ -11,30 +11,30 @@
         <div class="results">
             <div class="results-block">
                 <div class="results-header">Results</div>
-                <label>Assets</label>
-                <label>{{ assets_sum|floatformat:3 }}</label>
-                <label>Savings</label>
-                <label>{{ savings_sum|floatformat:3 }}</label>
-                <label>Debts</label>
-                <label>{{ debts_sum|floatformat:3 }}</label>
+                {% for result_row in results_queryset %}
+                    {% if result_row.acc__results == result_types.assets %}
+                        <label> {{ result_row.acc__name }}</label>
+                        <label> {{ result_row.total|floatformat:3 }}</label>
+                    {% endif %}
+                {% endfor %}
             </div>
             <div class="results-block">
                 <div class="results-header">Planning</div>
-                <label>Food</label>
-                <label>{{ planning_food }}</label>
-                <label>Transport</label>
-                <label>{{ planning_transport }}</label>
-                <label>Payments</label>
-                <label>{{ planning_payments }}</label>
-                <label>Unscheduled</label>
-                <label>{{ planning_unscheduled }}</label>
+                {% for result_row in results_queryset %}
+                    {% if result_row.acc__results == result_types.plans %}
+                        <label> {{ result_row.acc__name }}</label>
+                        <label> {{ result_row.total|floatformat:3 }}</label>
+                    {% endif %}
+                {% endfor %}
             </div>
             <div class="results-block">
                 <div class="results-header">Debts</div>
-                {% for debt in debts_queryset %}
-                    {% widthratio debt.total 1 -1 as total_debt %}
-                    <label>{{ debt.acc.name }}</label>
-                    <label>{{ total_debt|floatformat:3 }} </label>
+                {% for result_row in results_queryset %}
+                    {% if result_row.acc__results == result_types.debts and result_row.total != 0 %}
+                        {% widthratio result_row.total 1 -1 as total_debt %}
+                        <label>{{ result_row.acc__name }}</label>
+                        <label>{{ total_debt|floatformat:3 }} </label>
+                    {% endif %}
                 {% empty %}
                     <label>-</label>
                 {% endfor %}
@@ -81,10 +81,10 @@
         <div class="main-book">
             {% for entry in entries %}
                 <div class="main-book-item">{{ entry.date|date:"Y M d"  }}</div>
-                <div class="main-book-item">{{ entry.acc_dr }}</div>
-                <div class="main-book-item">{{ entry.acc_cr }}</div>
+                <div class="main-book-item">{{ entry.acc_dr__name }}</div>
+                <div class="main-book-item">{{ entry.acc_cr__name }}</div>
                 <div class="main-book-item" style="text-align: right">{{ entry.total|floatformat:3 }}</div>
-                <div class="main-book-item" style="text-align: center">{{ entry.currency }}</div>
+                <div class="main-book-item" style="text-align: center">{{ entry.currency__name }}</div>
                 <div class="main-book-item">{{ entry.comment }}</div>
             {% endfor %}
         </div>

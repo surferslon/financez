@@ -12,18 +12,24 @@ class Currency(models.Model):
 class Account(models.Model):
     TYPE_ACTIVE = 'a'
     TYPE_PASSIVE = 'p'
+    RESULT_ASSETS = 'ast'
     RESULT_INCOMES = 'inc'
     RESULT_EXPENSES = 'exp'
+    RESULT_DEBTS = 'dbt'
+    RESULT_PLANS = 'pln'
     ACC_TYPES = (
         (TYPE_ACTIVE, 'active'),
         (TYPE_PASSIVE, 'passive'),
     )
     RESULT_TYPES = (
+        (RESULT_ASSETS, 'assets'),
         (RESULT_INCOMES, 'incomes'),
         (RESULT_EXPENSES, 'expenses'),
+        (RESULT_DEBTS, 'debts'),
+        (RESULT_PLANS, 'planning'),
     )
     name = models.CharField(max_length=255)
-    code = models.CharField(max_length=255, blank=True, null=True)
+    order = models.CharField(max_length=255, blank=True, null=True)
     parent = models.ForeignKey('self', related_name='child', on_delete=models.CASCADE, null=True, blank=True)
     acc_type = models.CharField(max_length=1, choices=ACC_TYPES, default=TYPE_ACTIVE)
     results = models.CharField(max_length=3, choices=RESULT_TYPES, null=True, blank=True)

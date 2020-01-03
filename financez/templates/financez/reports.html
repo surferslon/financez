@@ -9,7 +9,14 @@
 
 {% block content %}
     <div class="dx-viewport">
-        <div class="demo-container" data-url="{% url 'report_data' %}">
+        <div class="period">
+            <label>Period:</label>
+            <input id="period-from" name="period-from" type="date" value={{ period_from }}>
+            <lbael> - </lbael>
+            <input id="period-to" name="period-to" type="date" value={{ period_to }}>
+            <button id="update-report"> update </button>
+        </div>
+        <div class="demo-container" data-url="{% url 'report_data' %}" >
             <div id="chart" style="height: 750px"></div>
         </div>
     </div>
