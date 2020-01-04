@@ -1,10 +1,51 @@
 {% extends 'financez/base.html' %}
+{% load static %}
+
+
+{% block extra_styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'financez/settings.css' %}">
+    <style>
+        #{{ sections.assets }} #menu-assets,
+        #{{ sections.plans }} #menu-plans,
+        #{{ sections.debts }} #menu-debts,
+        #{{ sections.incomes }} #menu-incomes,
+        #{{ sections.expenses }} #menu-expenses
+        {
+            border-left: 1px solid gray;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
 
 {% block content %}
+    {% csrf_token %}
     <div class="row">
-        <div class="accounts-list">
-            <input hidden id="acc_type"></input>
-            <div> {% include 'financez/account_list.html' with account_list=account_list title="Accounts" %} </div>
+        <div id="acc-list" class="account-list" data-url="{% url 'change_field' %}">
+            <div class="settings-menu" id="{{ section }}">
+                <a class="set-menu-item" href="{% url 'settings' sections.assets %}" id="menu-assets">Assets</a>
+                <a class="set-menu-item" href="{% url 'settings' sections.plans %}" id="menu-plans">Planning</a>
+                <a class="set-menu-item" href="{% url 'settings' sections.debts %}" id="menu-debts">Debts</a>
+                <a class="set-menu-item" href="{% url 'settings' sections.incomes %}" id="menu-incomes">Incomes</a>
+                <a class="set-menu-item" href="{% url 'settings' sections.expenses %}" id="menu-expenses">Expenses</a>
+            </div>
+
+            <div class="acc-tree">
+                <div class="acc-tree-row">
+                    <div class="acc-tree-header">Name</div>
+                    <div class="acc-tree-header">Parent</div>
+                    <div class="acc-tree-header">Order</div>
+                    <div class="acc-tree-header">Type</div>
+                    <div class="acc-tree-header">Results</div>
+                </div>
+                {% include 'financez/account_settings.html' with account_list=account_list padding=0 %}
+            </div>
+
         </div>
     </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script src="{% static 'financez/settings.js' %}"></script>
 {% endblock %}

@@ -29,7 +29,7 @@ class Account(models.Model):
         (RESULT_PLANS, 'planning'),
     )
     name = models.CharField(max_length=255)
-    order = models.CharField(max_length=255, blank=True, null=True)
+    order = models.IntegerField(blank=True, default=0)
     parent = models.ForeignKey('self', related_name='child', on_delete=models.CASCADE, null=True, blank=True)
     acc_type = models.CharField(max_length=1, choices=ACC_TYPES, default=TYPE_ACTIVE)
     results = models.CharField(max_length=3, choices=RESULT_TYPES, null=True, blank=True)

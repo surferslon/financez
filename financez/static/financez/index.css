@@ -3,6 +3,9 @@
     display: grid;
     width: 70%;
     grid-template-columns: 25% 25% 25% 25%;
+    background-color: #FFF;
+    margin-top: 20px;
+    border: 1px solid #e6e6e6;
 }
 .results-header {
     grid-column: 1/3;
@@ -14,17 +17,18 @@
     grid-template-columns: 50% 50%;
     grid-template-rows: 20px;
     grid-auto-rows: max-content;
+    padding: 0px 10px 0px 10px;
 }
 
 .main-book {
     overflow: hidden;
     overflow-y: auto;
-    grid-auto-rows: max-content;
-    /*border: 1px solid #dbdbdb;*/
     width: 70%;
     height: 600px;
-    display: grid;
-    grid-template-columns: 13% 19% 15% 8% 10% 35%;
+    padding: 0px 5px 0px 5px;
+    border: 1px solid #dbdbdb;
+    border-top: none;
+    background-color: #FFF;
 }
 .main-book-header {
     height: 15px;
@@ -33,17 +37,18 @@
     display: grid;
     grid-template-columns: 13% 19% 15% 8% 10% 35%;
     border: 1px solid #dbdbdb;
+    background-color: #FFF;
 }
-@media screen and (max-width: 1200px) {
-   .main-book {
-        width: 95%;
-   }
-   .main-book-header {
-        width: 95%;
-   }
+.main-book-row {
+    display: grid;
+    grid-template-columns: 13% 19% 15% 8% 10% 35%;
+    grid-auto-rows: max-content;
+}
+.main-book-row:hover {
+    background-color: #fafafa;
 }
 .main-book-item {
-
+    cursor: pointer;
 }
 .break {
     flex-basis: 100%;
@@ -67,7 +72,18 @@
     .new-entry-form {
         width: 95%
     }
+   .main-book {
+        width: 95%;
+   }
+   .main-book-header {
+        width: 95%;
+   }
+   .results {
+        width: 95%;
+   }
 }
+
+/*modal window */
 
 .account-selector {
     display: none;
@@ -80,7 +96,7 @@
     background-color:rgba(0, 0, 0, 0.5);
 }
 .accounts-list {
-    width: 50%;
+    width: 400px;
     height: 600px;
     display: grid;
     grid-template-columns: 100%;
@@ -91,8 +107,17 @@
         "f b" ;*/
     background: white;
     overflow: hidden;
-    overflow-y: auto;
     z-index: 100;
+    border-radius: 5px;
+}
+.account-container {
+    margin: 20px;
+    overflow-y: auto;
+}
+.acc-item {
+    cursor: pointer;
+}
+.acc-item:hover {
 }
 .nested {
     /*display: none;*/

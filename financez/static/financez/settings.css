@@ -1,0 +1,43 @@
+input {
+    border: none;
+
+}
+select {
+    border: none;
+}
+
+.account-list {
+    width: 70%;
+    border: 1px solid #dbdbdb;
+    margin: 20px 0px 20px 0px;
+    background-color: #FFF;
+    display: grid;
+    grid-template-columns: 20% 80%;
+}
+.settings-menu {
+    border-right: 1px solid #dbdbdb;
+}
+.set-menu-item {
+    display: block;
+    padding: 20px;
+    border-bottom: 1px solid #dbdbdb;
+    border-left: 1px solid #dbdbdb;
+}
+.set-menu-item:hover {
+    border-left: 1px solid gray;
+}
+.acc-tree {
+    margin-bottom: 20px;
+}
+.acc-tree-row {
+    display: grid;
+    grid-template-columns: 30% 20% 15% 15% 20%;
+    grid-auto-rows: max-content;
+}
+.acc-tree-header {
+    padding: 10px;
+    font-weight: bold;
+}
+.acc-tree-item {
+    padding: 5px 10px 5px 10px;
+}

@@ -1,0 +1,33 @@
+{% for acc in account_list %}
+
+    <div class="acc-tree-row" data-accpk={{ acc.pk }}>
+
+        <input class="acc-tree-item" style="padding-left: {{ padding|add:20 }}px" data-field="name" value="{{ acc.name }}">
+
+        <select class="acc-tree-item" data-field="parent" >
+            <option selected value> -- </option>
+            {% for prnt in available_parents %}
+                <option value={{prnt.pk}} {% if prnt.pk == acc.parent_id %} selected {% endif %}>{{ prnt.name }}</option>
+            {% endfor %}
+        </select>
+
+        <input class="acc-tree-item" value={{ acc.order }} data-field="order" style="padding-left: {{ padding|add:20 }}px">
+
+        <select class="acc-tree-item" data-field="acc_type">
+            <option value="a" {% if acc.acc_type == 'a' %} selected {% endif %}>acive</option>
+            <option value="p" {% if acc.acc_type == 'p' %} selected {% endif %}>passive</option>
+        </select>
+
+        <select class="acc-tree-item" data-field="results" >
+            {% for results_name, results_value in sections.items %}
+                <option value={{results_value}} {% if acc.results == results_value %} selected {% endif %}>
+                    {{results_name}}
+                </option>
+            {% endfor %}
+        </select>
+
+    </div>
+
+    {% include 'financez/account_settings.html' with account_list=acc.subaccs padding=padding|add:10 %}
+
+{% endfor %}

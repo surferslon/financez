@@ -1,7 +1,11 @@
 #pivotgrid {
     margin-top: 20px;
 }
-
+.dx-viewport {
+    margin: 20px 10px 10px 10px;
+    padding-bottom: 10px;
+    border: 1px solid #dbdbdb;
+}
 .currency {
     text-align: center;
 }

@@ -1,6 +1,6 @@
 from datetime import datetime, date
 from django.views.generic import CreateView, TemplateView
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.db.models import Q, Sum
 from .models import Entry, Account, AccountBalance
 from .forms import NewEntryForm
@@ -70,6 +70,15 @@ def report_data(request):
     return JsonResponse(response, safe=False)
 
 
+def change_field(request):
+    acc_pk = request.POST.get('acc_pk')
+    acc_field = request.POST.get('acc_field')
+    new_value = request.POST.get('value')
+    update_params = {acc_field: new_value}
+    Account.objects.filter(pk=acc_pk).update(**update_params)
+    return HttpResponse('')
+
+
 class MainView(CreateView):
     model = Entry
     template_name = 'financez/index.html'
@@ -96,7 +105,7 @@ class MainView(CreateView):
                 Q(acc__results=Account.RESULT_ASSETS) |
                 Q(acc__results=Account.RESULT_PLANS) |
                 Q(acc__results=Account.RESULT_DEBTS))
-            .values('acc__name', 'acc__results', 'total')
+            .values('acc__name', 'acc__results', 'total').order_by('acc__order')
         )
         # results by month
         incomes_sum = Entry.objects.filter(
@@ -132,5 +141,14 @@ class SettingsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['account_list'] = make_account_tree()
+        section = kwargs.get('section')
+        context['account_list'] = make_account_tree(section)
+        context['available_parents'] = Account.objects.filter(results=section).values('pk', 'name')
+        context['sections'] = {
+            'assets': Account.RESULT_ASSETS,
+            'plans': Account.RESULT_PLANS,
+            'debts': Account.RESULT_DEBTS,
+            'incomes': Account.RESULT_INCOMES,
+            'expenses': Account.RESULT_EXPENSES,
+        }
         return context

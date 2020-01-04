@@ -3,7 +3,7 @@ var create_report = function(response) {
     var incomes_accs
     var seriesSource = []
     var dataSource = [{}]
-    var ExpIndes = response.accounts_incomes.length
+    var ExpIndex = response.accounts_incomes.length
 
     for (var i=0; i<response.accounts_incomes.length; i++) {
         seriesSource.push({
@@ -35,15 +35,15 @@ var create_report = function(response) {
             verticalAlignment: "top",
             position: "outside",
             border: { visible: false },
-            columnCount: 2,
-            customizeItems: function(items) {
-                var sortedItems = [];
-                items.forEach(function (item) {
-                    var startIndex = item.series.stack === "incomes" ? 0 : ExpIndes;
-                    sortedItems.splice(startIndex, 0, item);
-                });
-                return sortedItems;
-            }
+            columnCount: 1,
+            // customizeItems: function(items) {
+            //     var sortedItems = [];
+            //     items.forEach(function (item) {
+            //         var startIndex = item.series.stack === "incomes" ? 0 : ExpIndex;
+            //         sortedItems.splice(startIndex, 0, item);
+            //     });
+            //     return sortedItems;
+            // }
         },
         valueAxis: {
         },
