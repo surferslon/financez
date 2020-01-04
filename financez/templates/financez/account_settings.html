@@ -2,7 +2,7 @@
 
     <div class="acc-tree-row" data-accpk={{ acc.pk }}>
 
-        <input class="acc-tree-item" style="padding-left: {{ padding|add:20 }}px" data-field="name" value="{{ acc.name }}">
+        <input class="acc-tree-item" style="padding-left: {{ padding|add:25 }}px" data-field="name" value="{{ acc.name }}">
 
         <select class="acc-tree-item" data-field="parent" >
             <option selected value> -- </option>
@@ -11,7 +11,7 @@
             {% endfor %}
         </select>
 
-        <input class="acc-tree-item" value={{ acc.order }} data-field="order" style="padding-left: {{ padding|add:20 }}px">
+        <input class="acc-tree-item" value={{ acc.order }} data-field="order" style="padding-left: {{ padding|add:25 }}px">
 
         <select class="acc-tree-item" data-field="acc_type">
             <option value="a" {% if acc.acc_type == 'a' %} selected {% endif %}>acive</option>
@@ -25,6 +25,8 @@
                 </option>
             {% endfor %}
         </select>
+
+        <a href="{% url 'del_acc' acc.pk %}" class='del-button'>x</a>
 
     </div>
 

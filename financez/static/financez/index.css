@@ -85,39 +85,45 @@
 
 /*modal window */
 
-.account-selector {
+#modal-account-list {
     display: none;
-    top: 0;
-    left: 0;
-    /*z-index: 10;*/
-    height: 100%;
-    width: 100%;
     position: absolute;
-    background-color:rgba(0, 0, 0, 0.5);
-}
-.accounts-list {
-    width: 400px;
+    top: 200px;
+    width: 600px;
     height: 600px;
-    display: grid;
-    grid-template-columns: 100%;
-/*    grid-template-areas:
-        "a b"
-        "c b"
-        "e b"
-        "f b" ;*/
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
     background: white;
-    overflow: hidden;
-    z-index: 100;
+    z-index: 5;
     border-radius: 5px;
 }
 .account-container {
     margin: 20px;
-    overflow-y: auto;
+    overflow-y: scroll;
+    height: 90%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-auto-rows: max-content;
+    grid-template-areas:
+        "a b"
+        "c b"
+        "d b"
+        "e b"
+        "f b";
 }
 .acc-item {
     cursor: pointer;
+    margin: 2px;
 }
 .acc-item:hover {
+    background-color: #e6f0ff;
+
+}
+.acc-list-block {
+    border-bottom: 1px solid #dbdbdb;
+    padding: 10px;
 }
 .nested {
     /*display: none;*/

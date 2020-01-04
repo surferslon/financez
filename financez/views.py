@@ -1,9 +1,11 @@
 from datetime import datetime, date
 from django.views.generic import CreateView, TemplateView
+from django.views.generic.edit import DeleteView
 from django.http import JsonResponse, HttpResponse
-from django.db.models import Q, Sum
+from django.db.models import Q, Sum, Count
+from django.urls import reverse
 from .models import Entry, Account, AccountBalance
-from .forms import NewEntryForm
+from .forms import NewEntryForm, NewAccForm
 from .utils import make_account_tree
 
 
@@ -104,8 +106,17 @@ class MainView(CreateView):
             .filter(
                 Q(acc__results=Account.RESULT_ASSETS) |
                 Q(acc__results=Account.RESULT_PLANS) |
-                Q(acc__results=Account.RESULT_DEBTS))
-            .values('acc__name', 'acc__results', 'total').order_by('acc__order')
+                Q(acc__results=Account.RESULT_DEBTS),
+                acc__child=None)
+            .values('acc__name', 'acc__results', 'total', 'acc__parent').order_by('acc__order')
+        )
+        # results by groups
+        context['results_grouped_queryset'] = (
+            AccountBalance.objects.filter(
+                Q(acc__results=Account.RESULT_ASSETS) |
+                Q(acc__results=Account.RESULT_PLANS) |
+                Q(acc__results=Account.RESULT_DEBTS)
+            ).exclude(acc__parent=None).values('acc__parent__name', 'acc__parent__results').annotate(total=Sum('total'))
         )
         # results by month
         incomes_sum = Entry.objects.filter(
@@ -120,7 +131,9 @@ class MainView(CreateView):
         context['result_types'] = {
             'assets': Account.RESULT_ASSETS,
             'debts': Account.RESULT_DEBTS,
-            'plans': Account.RESULT_PLANS
+            'plans': Account.RESULT_PLANS,
+            'incomes': Account.RESULT_INCOMES,
+            'expenses': Account.RESULT_EXPENSES
         }
         return context
 
@@ -144,6 +157,7 @@ class SettingsView(TemplateView):
         section = kwargs.get('section')
         context['account_list'] = make_account_tree(section)
         context['available_parents'] = Account.objects.filter(results=section).values('pk', 'name')
+        context['new_acc_form'] = NewAccForm(section=section)
         context['sections'] = {
             'assets': Account.RESULT_ASSETS,
             'plans': Account.RESULT_PLANS,
@@ -152,3 +166,18 @@ class SettingsView(TemplateView):
             'expenses': Account.RESULT_EXPENSES,
         }
         return context
+
+
+class NewAccView(CreateView):
+    model = Account
+    form_class = NewAccForm
+
+    def get_success_url(self, **kwargs):
+        return reverse('settings', args=(self.request.POST.get('results'), ))
+
+
+class DelAccView(DeleteView):
+    model = Account
+
+    def get_success_url(self, **kwargs):
+        return reverse('settings', args=(self.request.POST.get('section'), ))

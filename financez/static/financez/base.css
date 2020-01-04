@@ -90,3 +90,11 @@ footer {
     font-weight: bold;
 }
 
+#modal-background {
+    display: none;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100%;
+    width: 100%;
+    top: 0;
+}

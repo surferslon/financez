@@ -1,11 +1,10 @@
 {% if account_list %}
 
-    <ul {% if nested %} class="nested" {% endif %}>
     {% for acc in account_list %}
-        <li class="acc-item" data-accpk="{{ acc.id }}">{{ acc.name }}
-            {% include 'financez/account_list.html' with account_list=acc.subaccs nested=True title='' %}
-        </li>
+        {% if acc.results == type %}
+            <div class="acc-item" style="padding-left: {{ padding|add:20 }}px" data-accpk="{{ acc.pk }}">{{ acc.name }}</div>
+            {% include 'financez/account_list.html' with account_list=acc.subaccs nested=True padding=padding|add:20 %}
+        {% endif %}
     {% endfor %}
-    </ul>
 
 {% endif %}

@@ -31,18 +31,37 @@
             </div>
 
             <div class="acc-tree">
-                <div class="acc-tree-row">
+                <div class="acc-tree-row-header">
                     <div class="acc-tree-header">Name</div>
                     <div class="acc-tree-header">Parent</div>
                     <div class="acc-tree-header">Order</div>
                     <div class="acc-tree-header">Type</div>
                     <div class="acc-tree-header">Results</div>
+                    <button id="new-acc-button"> + </button>
                 </div>
                 {% include 'financez/account_settings.html' with account_list=account_list padding=0 %}
             </div>
 
         </div>
     </div>
+
+    <div id="modal-new-acc">
+        <form id="form-new-acc" method='post', action="{% url 'new_acc' %}">
+            {% csrf_token %}
+            {{ new_acc_form }}
+            <button style='margin-top: 20px; grid-column: 2/3'>Create</button>
+        </form>
+    </div>
+
+    <div id="modal-del-acc">
+        <form id="form-del-acc" method='post'>
+            {% csrf_token %}
+            <input name="section" value={{ section }} hidden />
+            <label>Are you sure?</label>
+            <button style=''>Yes</button>
+        </form>
+    </div>
+
 {% endblock %}
 
 

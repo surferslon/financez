@@ -9,15 +9,22 @@
 
     <div class="row">
         <div class="results">
+
             <div class="results-block">
                 <div class="results-header">Results</div>
                 {% for result_row in results_queryset %}
                     {% if result_row.acc__results == result_types.assets %}
-                        <label> {{ result_row.acc__name }}</label>
-                        <label> {{ result_row.total|floatformat:3 }}</label>
+                        {% if not result_row.acc__parent %}
+                            <label> {{ result_row.acc__name }}</label>
+                            <label> {{ result_row.total|floatformat:3 }}</label>
+                        {% elif result_row.total %}
+                            <label style='opacity: 0.6'> {{ result_row.acc__name }}</label>
+                            <label style='opacity: 0.6'> {{ result_row.total|floatformat:3 }}</label>
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
             </div>
+
             <div class="results-block">
                 <div class="results-header">Planning</div>
                 {% for result_row in results_queryset %}
@@ -27,6 +34,7 @@
                     {% endif %}
                 {% endfor %}
             </div>
+
             <div class="results-block">
                 <div class="results-header">Debts</div>
                 {% for result_row in results_queryset %}
@@ -39,6 +47,7 @@
                     <label>-</label>
                 {% endfor %}
             </div>
+
             <div class="results-block">
                 <div class="results-header">{{ current_month|date:"M Y" }}</div>
                 <span>Incomes</span>
@@ -48,6 +57,7 @@
                 <span>Result</span>
                 <span>{{ month_result|floatformat:3 }} </span>
             </div>
+
         </div>
     </div>
 
@@ -56,7 +66,9 @@
             {% csrf_token %}
             {{ form.date }}
             {{ form.acc_dr }}
+            <input id="acc_dr_visible"/>
             {{ form.acc_cr }}
+            <input id="acc_cr_visible"/>
             {{ form.total }}
             {{ form.currency }}
             {{ form.comment }}
@@ -90,14 +102,30 @@
         </div>
     </div>
 
-    <div id="account-selector" class="account-selector">
-        <div class="row" style="height: 100%; align-items: center">
-            <div class="accounts-list">
-                <div class="account-container">
-                    <input hidden id="acc_type"></input>
-                    <div> {% include 'financez/account_list.html' with account_list=account_list title="Accounts" %} </div>
-                </div>
+    <div id="modal-account-list">
+        <div class="account-container">
+            <input id="acc_type" hidden />
+            <div class="acc-list-block" style="grid-area: a">
+                <label class="results-header"> Assets </label>
+                <div> {% include 'financez/account_list.html' with type=result_types.assets account_list=account_list padding=10 %} </div>
             </div>
+            <div class="acc-list-block" style="grid-area: b; border-left: 1px solid #dbdbdb">
+                <label class="results-header"> Expenses </label>
+                <div> {% include 'financez/account_list.html' with type=result_types.expenses account_list=account_list padding=10 %} </div>
+            </div>
+            <div class="acc-list-block" style="grid-area: c">
+                <label class="results-header"> Plans </label>
+                <div> {% include 'financez/account_list.html' with type=result_types.plans account_list=account_list padding=10 %} </div>
+            </div>
+            <div class="acc-list-block" style="grid-area: d">
+                <label class="results-header"> Debts </label>
+                <div> {% include 'financez/account_list.html' with type=result_types.debts account_list=account_list padding=10 %} </div>
+            </div>
+            <div class="acc-list-block" style="grid-area: e">
+                <label class="results-header"> Incomes </label>
+                <div> {% include 'financez/account_list.html' with type=result_types.incomes account_list=account_list padding=10 %} </div>
+            </div>
+
         </div>
     </div>
 
