@@ -2,7 +2,7 @@ from datetime import datetime, date
 from django.views.generic import CreateView, TemplateView
 from django.views.generic.edit import DeleteView
 from django.http import JsonResponse, HttpResponse
-from django.db.models import Q, Sum, Count
+from django.db.models import Q, Sum
 from django.urls import reverse
 from .models import Entry, Account, AccountBalance
 from .forms import NewEntryForm, NewAccForm
@@ -37,7 +37,11 @@ def report_data(request):
     results = []
     for entr in qs_exp:
         group_date = '{}.{}'.format(entr.date.year, entr.date.month)
-        acc_name = 'exp:{}'.format(entr.acc_dr.parent.name) if group_by_parent else 'exp:{}:{}'.format(entr.acc_dr.parent.name, entr.acc_dr.name)
+        acc_name = (
+            'exp:{}'.format(entr.acc_dr.parent.name)
+            if group_by_parent
+            else 'exp:{}:{}'.format(entr.acc_dr.parent.name, entr.acc_dr.name)
+        )
         group_dict = next((item for item in results if item['group_date'] == group_date), None)
         if group_dict:
             group_dict[acc_name] = entr.total + group_dict.get(acc_name, 0)

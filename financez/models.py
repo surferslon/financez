@@ -36,16 +36,6 @@ class Account(models.Model):
 
     def __str__(self):
         return self.name
-        # return '{}: {}'.format(self.parent.name, self.name) if self.parent else self.name
-
-    @property
-    def full_name(self):
-        parents = []
-        parent = self.parent
-        while parent:
-            parents.insert(0, parent.name)
-            parent = parent.parent
-        return '{}/{}'.format('/'.join(parents), self.name)
 
 
 class Entry(models.Model):

@@ -90,7 +90,5 @@ select {
     grid-template-columns: 50% 50%;
 }
 #form-del-acc {
-    /*display: flex;*/
     text-align: center;
-    /*grid-template-columns: 50% 50%;*/
 }
