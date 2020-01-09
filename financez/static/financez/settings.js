@@ -24,6 +24,7 @@ $(function() {
     $('#new-acc-button').click(function(event) {
         $('#modal-background').css('display', 'flex');
         $('#modal-new-acc').css('display', 'block');
+        $('body').css('overflow', 'hidden');
     })
 
     $('.del-button').click(function(event) {
@@ -37,6 +38,7 @@ $(function() {
         $('#modal-background').css('display', 'none');
         $('#modal-new-acc').css('display', 'none');
         $('#modal-del-acc').css('display', 'none');
+        $('body').css('overflow', 'auto');
     });
 
 })

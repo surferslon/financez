@@ -35,4 +35,17 @@ $(function(){
 
         })
     }
+    let bookRows = document.getElementsByClassName('main-book-row')
+    for(let i = 0; i < bookRows.length; i++) {
+        bookRows[i].addEventListener("mouseenter", function(event) {
+            $('.' + event.target.classList[1]).each(function(ind, element) {
+                $(element).css('background-color', '#fafafa')
+            })
+        })
+        bookRows[i].addEventListener("mouseleave", function(event) {
+            $('.' + event.target.classList[1]).each(function(ind, element) {
+                $(element).css('background-color', 'white')
+            })
+        })
+    }
 })

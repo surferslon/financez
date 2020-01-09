@@ -44,7 +44,7 @@
     grid-auto-rows: max-content;
 }
 .main-book-row:hover {
-    background-color: #fafafa;
+    color: black;
 }
 .main-book-item {
     cursor: pointer;

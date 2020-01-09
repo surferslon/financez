@@ -7,7 +7,7 @@ SECRET_KEY = 'l@6boni%5$tg*dzta%6fellmleoum4g*p-1#q64g3hi-0&1@!n'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 INSTALLED_APPS = [
@@ -90,6 +90,7 @@ DATE_FORMAT = 'Y n j'
 FIRST_DAY_OF_WEEK = 1
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/srv/static/financez/'
 
 LOGGING = {
     'version': 1,

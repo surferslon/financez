@@ -30,7 +30,7 @@ def report_data(request):
     )
     qs_inc = (
         Entry.objects
-        .filter(date__gt=period_from, date__lt=period_to, acc_cr__results=Account.RESULT_INCOMES)
+        .filter(date__gte=period_from, date__lte=period_to, acc_cr__results=Account.RESULT_INCOMES)
         .select_related('acc_cr', 'acc_cr__parent')
         .order_by('date')
     )
@@ -57,8 +57,8 @@ def report_data(request):
             results.append({'group_date': group_date, acc_name: entr.total})
     if group_by_parent:
         exp_accounts = [
-            'exp:{}'.format(acc['parent__name']) for acc in
-            Account.objects.filter(results=Account.RESULT_EXPENSES).order_by('parent__order').values('parent__name').distinct()
+            'exp:{}'.format(acc['name']) for acc in
+            Account.objects.filter(results=Account.RESULT_EXPENSES, parent=None).order_by('order').values('name')
         ]
     else:
         exp_accounts = [
@@ -160,7 +160,7 @@ class SettingsView(TemplateView):
         context = super().get_context_data(**kwargs)
         section = kwargs.get('section')
         context['account_list'] = make_account_tree(section)
-        context['available_parents'] = Account.objects.filter(results=section).values('pk', 'name')
+        context['available_parents'] = Account.objects.filter(results=section, parent=None).values('pk', 'name')
         context['new_acc_form'] = NewAccForm(section=section)
         context['sections'] = {
             'assets': Account.RESULT_ASSETS,

@@ -90,7 +90,7 @@
     <div class="row">
         <div class="main-book">
             {% for entry in entries %}
-                <div class="main-book-row">
+                <div class="main-book-row {{ entry.date|date:'YMd' }}">
                     <div class="main-book-item">{{ entry.date|date:"Y M d"  }}</div>
                     <div class="main-book-item">{{ entry.acc_dr__name }}</div>
                     <div class="main-book-item">{{ entry.acc_cr__name }}</div>
