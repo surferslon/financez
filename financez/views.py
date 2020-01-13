@@ -1,4 +1,5 @@
 from datetime import datetime, date
+from django.views import View
 from django.views.generic import CreateView, TemplateView
 from django.views.generic.edit import DeleteView
 from django.http import JsonResponse, HttpResponse
@@ -7,73 +8,6 @@ from django.urls import reverse
 from .models import Entry, Account, AccountBalance
 from .forms import NewEntryForm, NewAccForm
 from .utils import make_account_tree
-
-
-def report_data(request):
-    today = datetime.now()
-    period_from = request.GET.get('period-from')
-    period_to = request.GET.get('period-to')
-    if not period_from or not period_to:
-        period_from = date(today.year, 1, 1)
-        period_to = today
-    else:
-        period_from = datetime.strptime(period_from, "%Y-%m-%d")
-        period_to = datetime.strptime(period_to, "%Y-%m-%d")
-
-    group_by_parent = True
-
-    qs_exp = (
-        Entry.objects
-        .filter(date__gte=period_from, date__lte=period_to, acc_dr__results=Account.RESULT_EXPENSES)
-        .select_related('acc_dr', 'acc_dr__parent')
-        .order_by('date')
-    )
-    qs_inc = (
-        Entry.objects
-        .filter(date__gte=period_from, date__lte=period_to, acc_cr__results=Account.RESULT_INCOMES)
-        .select_related('acc_cr', 'acc_cr__parent')
-        .order_by('date')
-    )
-    results = []
-    for entr in qs_exp:
-        group_date = '{}.{}'.format(entr.date.year, entr.date.month)
-        acc_name = (
-            'exp:{}'.format(entr.acc_dr.parent.name)
-            if group_by_parent
-            else 'exp:{}:{}'.format(entr.acc_dr.parent.name, entr.acc_dr.name)
-        )
-        group_dict = next((item for item in results if item['group_date'] == group_date), None)
-        if group_dict:
-            group_dict[acc_name] = entr.total + group_dict.get(acc_name, 0)
-        else:
-            results.append({'group_date': group_date, acc_name: entr.total})
-    for entr in qs_inc:
-        group_date = '{}.{}'.format(entr.date.year, entr.date.month)
-        acc_name = 'inc:{}'.format(entr.acc_cr.name)
-        group_dict = next((item for item in results if item['group_date'] == group_date), None)
-        if group_dict:
-            group_dict[acc_name] = entr.total + group_dict.get(acc_name, 0)
-        else:
-            results.append({'group_date': group_date, acc_name: entr.total})
-    if group_by_parent:
-        exp_accounts = [
-            'exp:{}'.format(acc['name']) for acc in
-            Account.objects.filter(results=Account.RESULT_EXPENSES, parent=None).order_by('order').values('name')
-        ]
-    else:
-        exp_accounts = [
-            'exp:{}:{}'.format(acc['parent__name'], acc['name']) for acc in
-            Account.objects.filter(results=Account.RESULT_EXPENSES).values('name', 'parent__name').distinct()
-        ]
-    response = {
-        'accounts_incomes': [
-            'inc:{}'.format(acc['name']) for acc in
-            Account.objects.filter(results=Account.RESULT_INCOMES).values('name')
-        ],
-        'accounts_expenses': exp_accounts,
-        'results': results,
-    }
-    return JsonResponse(response, safe=False)
 
 
 def change_field(request):
@@ -89,7 +23,7 @@ class MainView(CreateView):
     model = Entry
     template_name = 'financez/index.html'
     form_class = NewEntryForm
-    success_url = '/'
+    success_url = 'main_book'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -151,6 +85,73 @@ class ReportsView(TemplateView):
         context['period_from'] = date(today.year, 1, 1).strftime("%Y-%m-%d")
         context['period_to'] = today.strftime("%Y-%m-%d")
         return context
+
+
+class ReportDataView(View):
+
+    def calculate_results(self, results, entries, group_by_parent):
+        for entr in entries:
+            group_date = f'{entr.date.year}.{entr.date.month}'
+            if entr.acc_dr.results == Account.RESULT_EXPENSES:
+                acc_name = (
+                    f'exp:{entr.acc_dr.parent.name}'
+                    if group_by_parent
+                    else f'exp:{entr.acc_dr.parent.name}:{entr.acc_dr.name}'
+                )
+            else:
+                acc_name = f'inc:{entr.acc_cr.name}'
+            group_dict = next((item for item in results if item['group_date'] == group_date), None)
+            if group_dict:
+                group_dict[acc_name] = entr.total + group_dict.get(acc_name, 0)
+            else:
+                results.append({'group_date': group_date, acc_name: entr.total})
+
+    def get(self, request, *args, **kwargs):
+        today = datetime.now()
+        group_by_parent = True
+        period_from = request.GET.get('period-from', date(today.year, 1, 1))
+        period_to = request.GET.get('period-to', today)
+        if isinstance(period_from, str):
+            period_from = datetime.strptime(period_from, "%Y-%m-%d")
+        if isinstance(period_to, str):
+            period_to = datetime.strptime(period_to, "%Y-%m-%d")
+        qs_exp = (
+            Entry.objects
+            .filter(date__gte=period_from, date__lte=period_to, acc_dr__results=Account.RESULT_EXPENSES)
+            .select_related('acc_dr', 'acc_dr__parent')
+            .order_by('date')
+        )
+        qs_inc = (
+            Entry.objects
+            .filter(date__gte=period_from, date__lte=period_to, acc_cr__results=Account.RESULT_INCOMES)
+            .select_related('acc_cr', 'acc_cr__parent')
+            .order_by('date')
+        )
+        results = []
+        self.calculate_results(results, qs_exp, group_by_parent)
+        self.calculate_results(results, qs_inc, group_by_parent)
+        inc_accounts = [
+            f'inc:{acc["name"]}' for acc in
+            Account.objects.filter(results=Account.RESULT_INCOMES).values('name')
+        ]
+        if group_by_parent:
+            exp_accounts = [
+                f'exp:{acc["name"]}' for acc in
+                Account.objects.filter(results=Account.RESULT_EXPENSES, parent=None).order_by('order').values('name')
+            ]
+        else:
+            exp_accounts = [
+                f'exp:{acc["parent__name"]}:{acc["name"]}' for acc in
+                Account.objects.filter(results=Account.RESULT_EXPENSES).values('name', 'parent__name').distinct()
+            ]
+        return JsonResponse(
+            {
+                'accounts_incomes': inc_accounts,
+                'accounts_expenses': exp_accounts,
+                'results': results,
+            },
+            safe=False
+        )
 
 
 class SettingsView(TemplateView):

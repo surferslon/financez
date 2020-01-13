@@ -50,18 +50,9 @@ class Entry(models.Model):
         verbose_name_plural = 'Entries'
 
     def __str__(self):
-        return '{} {} {} {}'.format(self.date, self.acc_dr.name, self.acc_cr.name, self.total)
+        return f'{self.date} {self.acc_dr} {self.acc_cr} {self.total}'
 
-    def update_turnovers_and_balance(self, acc):
-        # turnovers
-        turnover, new = AccountTurnover.objects.get_or_create(
-            date=self.date, acc=acc, currency=self.currency, entry=self)
-        if acc == self.acc_dr:
-            turnover.total_dr = self.total
-        else:
-            turnover.total_cr = self.total
-        turnover.save()
-        # balance
+    def update_balance(self, acc):
         balance, new = AccountBalance.objects.get_or_create(acc=acc, currency=self.currency)
         incomes = Entry.objects.filter(acc_dr=acc).aggregate(sum=Sum('total'))
         expenses = Entry.objects.filter(acc_cr=acc).aggregate(sum=Sum('total'))
@@ -70,8 +61,8 @@ class Entry(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.update_turnovers_and_balance(self.acc_dr)
-        self.update_turnovers_and_balance(self.acc_cr)
+        self.update_balance(self.acc_dr)
+        self.update_balance(self.acc_cr)
 
 
 class AccountBalance(models.Model):
@@ -80,13 +71,4 @@ class AccountBalance(models.Model):
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
 
     def __str__(self):
-        return '{}: {}'.format(self.acc.name, self.total)
-
-
-class AccountTurnover(models.Model):
-    date = models.DateField()
-    acc = models.ForeignKey(Account, on_delete=models.CASCADE)
-    total_dr = models.DecimalField(max_digits=15, decimal_places=3, default=0.0)
-    total_cr = models.DecimalField(max_digits=15, decimal_places=3, default=0.0)
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+        return f'{self.acc}: {self.total}'

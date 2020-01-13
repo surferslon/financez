@@ -5,7 +5,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'l@6boni%5$tg*dzta%6fellmleoum4g*p-1#q64g3hi-0&1@!n'
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -17,7 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'financez'
+    'financez.apps.FinancezConfig'
 ]
 
 MIDDLEWARE = [
@@ -81,7 +81,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-# USE_L10N = True
+USE_L10N = True
 
 USE_TZ = True
 
@@ -91,23 +91,3 @@ FIRST_DAY_OF_WEEK = 1
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/srv/static/financez/'
-
-LOGGING = {
-    'version': 1,
-    'filters': {
-        'require_debug_true': {'()': 'django.utils.log.RequireDebugTrue', }
-    },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'filters': ['require_debug_true'],
-            'class': 'logging.StreamHandler',
-        }
-    },
-    'loggers': {
-        'django.db.backends': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-        }
-    }
-}
