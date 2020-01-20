@@ -10,10 +10,10 @@
             <input  type="hidden" name="next" value="{{ next }}" />
             {{ form.username }}
             {{ form.password }}
-            <button type="submit" value="login">Log in</button>
+            <button type="submit" value="login">{% trans 'Log in' %}</button>
             <div class="error-list">
                 {% if form.errors %}
-                    Username or password is incorrect
+                    {% trans 'Username or password is incorrect' %}
                 {% endif %}
             </div>
         </form>

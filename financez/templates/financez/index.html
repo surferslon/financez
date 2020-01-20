@@ -1,5 +1,6 @@
 {% extends "financez/base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block extra_styles %}
     <link rel="stylesheet" type="text/css" href="{% static 'financez/index.css' %}">
@@ -11,7 +12,7 @@
         <div class="results">
 
             <div class="results-block">
-                <div class="results-header">Results</div>
+                <div class="results-header">{% trans 'Results' %}</div>
                 {% for result_row in results_queryset %}
                     {% if result_row.acc__results == result_types.assets %}
                         {% if not result_row.acc__parent %}
@@ -26,7 +27,7 @@
             </div>
 
             <div class="results-block">
-                <div class="results-header">Planning</div>
+                <div class="results-header">{% trans 'Planning' %}</div>
                 {% for result_row in results_queryset %}
                     {% if result_row.acc__results == result_types.plans %}
                         <label> {{ result_row.acc__name }}</label>
@@ -36,7 +37,7 @@
             </div>
 
             <div class="results-block">
-                <div class="results-header">Debts</div>
+                <div class="results-header">{% trans 'Debts'%}</div>
                 {% for result_row in results_queryset %}
                     {% if result_row.acc__results == result_types.debts and result_row.total != 0 %}
                         {% widthratio result_row.total 1 -1 as total_debt %}
@@ -50,11 +51,11 @@
 
             <div class="results-block">
                 <div class="results-header">{{ current_month|date:"M Y" }}</div>
-                <span>Incomes</span>
+                <span>{% trans 'Incomes' %}</span>
                 <span>{{ incomes_sum|floatformat:3 }}</span>
-                <span>Expenses</span>
+                <span>{% trans 'Expenses' %}</span>
                 <span>{{ expenses_sum|floatformat:3 }} </span>
-                <span>Result</span>
+                <span>{% trans 'Result' %}</span>
                 <span>{{ month_result|floatformat:3 }} </span>
             </div>
 
@@ -72,18 +73,18 @@
             {{ form.total }}
             {{ form.currency }}
             {{ form.comment }}
-            <button>Add</button>
+            <button>{% trans 'Add' %}</button>
         </form>
     </div>
 
     <div class="row">
         <div class="main-book-header">
-            <div>Date</div>
-            <div>DR</div>
-            <div>CR</div>
-            <div style="text-align: right">Sum</div>
-            <div style="text-align: center">Currency</div>
-            <div>Comment</div>
+            <div>{% trans 'Date' %}</div>
+            <div>{% trans 'DR' %}</div>
+            <div>{% trans 'CR' %}</div>
+            <div style="text-align: right">{% trans 'Sum' %}</div>
+            <div style="text-align: center">{% trans 'Currency' %}</div>
+            <div>{% trans 'Comment' %}</div>
         </div>
     </div>
 

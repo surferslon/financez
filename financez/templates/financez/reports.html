@@ -1,5 +1,6 @@
 {% extends 'financez/base.html' %}
 {% load static %}
+{% load i18n %}
 
 
 {% block extra_styles %}
@@ -13,7 +14,7 @@
             <input id="period-from" name="period-from" type="date" value={{ period_from }}>
             <lbael> - </lbael>
             <input id="period-to" name="period-to" type="date" value={{ period_to }}>
-            <button id="update-report"> update </button>
+            <button id="update-report"> {% trans 'update' %} </button>
         </div>
         <div class="demo-container" data-url="{% url 'report_data' %}" >
             <div id="chart" style="height: 750px"></div>

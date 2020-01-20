@@ -5,6 +5,7 @@ from . import views
 
 urlpatterns = [
     path('', login_required(views.MainView.as_view()), name='main_book'),
+    path('i18n/', include('django.conf.urls.i18n')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('reg/', include('registration.urls')),

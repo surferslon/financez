@@ -1,0 +1,210 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-01-20 19:15+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: financez/models.py:8 financez/models.py:44
+msgid "name"
+msgstr ""
+
+#: financez/models.py:9
+msgid "selected"
+msgstr ""
+
+#: financez/models.py:13 financez/templates/financez/index.html:86
+#: financez/templates/financez/settings.html:40
+msgid "Currency"
+msgstr ""
+
+#: financez/models.py:14
+msgid "Currencies"
+msgstr ""
+
+#: financez/models.py:34
+msgid "active"
+msgstr ""
+
+#: financez/models.py:35
+msgid "passive"
+msgstr ""
+
+#: financez/models.py:38
+msgid "assets"
+msgstr ""
+
+#: financez/models.py:39
+msgid "incomes"
+msgstr ""
+
+#: financez/models.py:40
+msgid "expenses"
+msgstr ""
+
+#: financez/models.py:41
+msgid "debts"
+msgstr ""
+
+#: financez/models.py:42
+msgid "planning"
+msgstr ""
+
+#: financez/models.py:45
+msgid "order"
+msgstr ""
+
+#: financez/models.py:46
+msgid "parent"
+msgstr ""
+
+#: financez/models.py:47
+msgid "type"
+msgstr ""
+
+#: financez/models.py:48
+msgid "results"
+msgstr ""
+
+#: financez/models.py:74
+msgid "Entry"
+msgstr ""
+
+#: financez/models.py:75
+msgid "Entries"
+msgstr ""
+
+#: financez/settings.py:71
+msgid "English"
+msgstr ""
+
+#: financez/settings.py:72
+msgid "Russian"
+msgstr ""
+
+#: financez/templates/financez/base.html:24
+msgid "Main"
+msgstr ""
+
+#: financez/templates/financez/base.html:27
+msgid "Reports"
+msgstr ""
+
+#: financez/templates/financez/base.html:30
+msgid "Settings"
+msgstr ""
+
+#: financez/templates/financez/index.html:15
+#: financez/templates/financez/settings.html:86
+msgid "Results"
+msgstr ""
+
+#: financez/templates/financez/index.html:30
+#: financez/templates/financez/settings.html:30
+msgid "Planning"
+msgstr ""
+
+#: financez/templates/financez/index.html:40
+#: financez/templates/financez/settings.html:31
+msgid "Debts"
+msgstr ""
+
+#: financez/templates/financez/index.html:54
+#: financez/templates/financez/settings.html:32
+msgid "Incomes"
+msgstr ""
+
+#: financez/templates/financez/index.html:56
+#: financez/templates/financez/settings.html:33
+msgid "Expenses"
+msgstr ""
+
+#: financez/templates/financez/index.html:58
+msgid "Result"
+msgstr ""
+
+#: financez/templates/financez/index.html:76
+msgid "Add"
+msgstr ""
+
+#: financez/templates/financez/index.html:82
+msgid "Date"
+msgstr ""
+
+#: financez/templates/financez/index.html:83
+msgid "DR"
+msgstr ""
+
+#: financez/templates/financez/index.html:84
+msgid "CR"
+msgstr ""
+
+#: financez/templates/financez/index.html:85
+msgid "Sum"
+msgstr ""
+
+#: financez/templates/financez/index.html:87
+msgid "Comment"
+msgstr ""
+
+#: financez/templates/financez/reports.html:17
+msgid "update"
+msgstr ""
+
+#: financez/templates/financez/settings.html:28
+msgid "General"
+msgstr ""
+
+#: financez/templates/financez/settings.html:29
+msgid "Assets"
+msgstr ""
+
+#: financez/templates/financez/settings.html:55
+msgid "UI Language"
+msgstr ""
+
+#: financez/templates/financez/settings.html:75
+msgid "Log out"
+msgstr ""
+
+#: financez/templates/financez/settings.html:82
+msgid "Name"
+msgstr ""
+
+#: financez/templates/financez/settings.html:83
+msgid "Parent"
+msgstr ""
+
+#: financez/templates/financez/settings.html:84
+msgid "Order"
+msgstr ""
+
+#: financez/templates/financez/settings.html:85
+msgid "Type"
+msgstr ""
+
+#: financez/templates/financez/settings.html:100
+#: financez/templates/financez/settings.html:118
+msgid "Create"
+msgstr ""
+
+#: financez/templates/financez/settings.html:108
+msgid "Are you sure?"
+msgstr ""
+
+#: financez/templates/financez/settings.html:109
+msgid "Yes"
+msgstr ""

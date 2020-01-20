@@ -56,17 +56,17 @@
                         </div>
                         <div>
                             {% get_available_languages as LANGUAGES %}
-                            <form action="/i18n/setlang/" method="post">
+                            {% get_current_language as LANGUAGE_CODE %}
+                            <form id="language-form" action="{% url 'set_language' %}" method="post">
                                 {% csrf_token %}
-                                <input name="next" type="hidden" value="/" />
-                                <select name="language">
+                                <input name="next" type="hidden" value="{% url 'settings' 'general' %}" />
+                                <select name="language" id="language-selector" value="{{ LANGUAGE_CODE }}">
                                     {% for lang in LANGUAGES %}
-                                        <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+                                        <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %} selected {% endif %}>{{ lang.1 }}</option>
                                     {% endfor %}
                                 </select>
-                              <!-- <input type="submit" value="Change" /> -->
+                              </form>
                         </div>
-
                     </div>
                     <div class="settings-row">
                         <div>
@@ -77,11 +77,11 @@
             {% else %}
                 <div class="acc-tree">
                     <div class="acc-tree-row-header">
-                        <div class="acc-tree-header">Name</div>
-                        <div class="acc-tree-header">Parent</div>
-                        <div class="acc-tree-header">Order</div>
-                        <div class="acc-tree-header">Type</div>
-                        <div class="acc-tree-header">Results</div>
+                        <div class="acc-tree-header">{% trans 'Name' %}</div>
+                        <div class="acc-tree-header">{% trans 'Parent' %}</div>
+                        <div class="acc-tree-header">{% trans 'Order' %}</div>
+                        <div class="acc-tree-header">{% trans 'Type' %}</div>
+                        <div class="acc-tree-header">{% trans 'Results' %}</div>
                         <button id="new-acc-button"> + </button>
                     </div>
                     {% include 'financez/account_settings.html' with account_list=account_list padding=0 %}

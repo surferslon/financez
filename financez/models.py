@@ -1,12 +1,17 @@
 from django.db import models
 from django.db.models import Sum
 from django.contrib.auth.models import User
+from django.utils.translation import gettext as _
 
 
 class Currency(models.Model):
-    name = models.CharField(max_length=255)
-    selected = models.BooleanField(blank=True, default=False)
+    name = models.CharField(verbose_name=_('name'), max_length=255)
+    selected = models.BooleanField(verbose_name=_('selected'), blank=True, default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _('Currency')
+        verbose_name_plural = _('Currencies')
 
     def __str__(self):
         return self.name
@@ -26,21 +31,21 @@ class Account(models.Model):
     RESULT_DEBTS = 'dbt'
     RESULT_PLANS = 'pln'
     ACC_TYPES = (
-        (TYPE_ACTIVE, 'active'),
-        (TYPE_PASSIVE, 'passive'),
+        (TYPE_ACTIVE, _('active')),
+        (TYPE_PASSIVE, _('passive')),
     )
     RESULT_TYPES = (
-        (RESULT_ASSETS, 'assets'),
-        (RESULT_INCOMES, 'incomes'),
-        (RESULT_EXPENSES, 'expenses'),
-        (RESULT_DEBTS, 'debts'),
-        (RESULT_PLANS, 'planning'),
+        (RESULT_ASSETS, _('assets')),
+        (RESULT_INCOMES, _('incomes')),
+        (RESULT_EXPENSES, _('expenses')),
+        (RESULT_DEBTS, _('debts')),
+        (RESULT_PLANS, _('planning')),
     )
-    name = models.CharField(max_length=255)
-    order = models.IntegerField(blank=True, default=0)
-    parent = models.ForeignKey('self', related_name='child', on_delete=models.CASCADE, null=True, blank=True)
-    acc_type = models.CharField(max_length=1, choices=ACC_TYPES, default=TYPE_ACTIVE)
-    results = models.CharField(max_length=3, choices=RESULT_TYPES, null=True, blank=True)
+    name = models.CharField(verbose_name=_('name'), max_length=255)
+    order = models.IntegerField(verbose_name=_('order'), blank=True, default=0)
+    parent = models.ForeignKey('self', verbose_name=_('parent'), related_name='child', on_delete=models.CASCADE, null=True, blank=True)
+    acc_type = models.CharField(verbose_name=_('type'), max_length=1, choices=ACC_TYPES, default=TYPE_ACTIVE)
+    results = models.CharField(verbose_name=_('results'), max_length=3, choices=RESULT_TYPES, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
 
     def __str__(self):
@@ -66,7 +71,8 @@ class Entry(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name_plural = 'Entries'
+        verbose_name = _('Entry')
+        verbose_name_plural = _('Entries')
 
     def __str__(self):
         return f'{self.date} {self.acc_dr} {self.acc_cr} {self.total}'

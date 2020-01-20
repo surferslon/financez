@@ -38,6 +38,11 @@ $(function() {
         })
     })
 
+    $('#language-selector').change(function(event){
+
+        $('#language-form').submit();
+    })
+
     $('#new-acc-button').click(function(event) {
         $('#modal-background').css('display', 'flex');
         $('#modal-new-acc').css('display', 'block');
