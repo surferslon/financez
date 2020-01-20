@@ -42,7 +42,7 @@ class MainView(CreateView):
         user = self.request.user
         try:
             currency = Currency.objects.get(user=user, selected=True)
-        except currency.DoesNotExist:
+        except Currency.DoesNotExist:
             currency = None
         context['current_month'] = today
         # entries per month
@@ -130,8 +130,11 @@ class ReportDataView(View):
         group_by_parent = True
         period_from = request.GET.get('period-from', date(today.year, 1, 1))
         period_to = request.GET.get('period-to', today)
-        currency = Currency.objects.get(selected=True)
         user = request.user
+        try:
+            currency = Currency.objects.get(user=user, selected=True)
+        except Currency.DoesNotExist:
+            currency = None
         if isinstance(period_from, str):
             period_from = datetime.strptime(period_from, "%Y-%m-%d")
         if isinstance(period_to, str):
