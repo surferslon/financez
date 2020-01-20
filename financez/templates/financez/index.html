@@ -107,23 +107,23 @@
         <div class="account-container">
             <input id="acc_type" hidden />
             <div class="acc-list-block" style="grid-area: a">
-                <label class="results-header"> Assets </label>
+                <label class="results-header"> {% trans 'Assets' %} </label>
                 <div> {% include 'financez/account_list.html' with type=result_types.assets account_list=account_list padding=10 %} </div>
             </div>
             <div class="acc-list-block" style="grid-area: b; border-left: 1px solid #dbdbdb">
-                <label class="results-header"> Expenses </label>
+                <label class="results-header"> {% trans 'Expenses' %} </label>
                 <div> {% include 'financez/account_list.html' with type=result_types.expenses account_list=account_list padding=10 %} </div>
             </div>
             <div class="acc-list-block" style="grid-area: c">
-                <label class="results-header"> Plans </label>
+                <label class="results-header"> {% trans 'Planning' %} </label>
                 <div> {% include 'financez/account_list.html' with type=result_types.plans account_list=account_list padding=10 %} </div>
             </div>
             <div class="acc-list-block" style="grid-area: d">
-                <label class="results-header"> Debts </label>
+                <label class="results-header"> {% trans 'Debts' %} </label>
                 <div> {% include 'financez/account_list.html' with type=result_types.debts account_list=account_list padding=10 %} </div>
             </div>
             <div class="acc-list-block" style="grid-area: e">
-                <label class="results-header"> Incomes </label>
+                <label class="results-header"> {% trans 'Incomes' %} </label>
                 <div> {% include 'financez/account_list.html' with type=result_types.incomes account_list=account_list padding=10 %} </div>
             </div>
 

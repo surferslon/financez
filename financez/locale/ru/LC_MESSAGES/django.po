@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-20 19:16+0000\n"
+"POT-Creation-Date: 2020-01-20 19:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
+
 #: financez/models.py:8 financez/models.py:44
 msgid "name"
 msgstr "наименование"
@@ -109,26 +110,30 @@ msgid "Settings"
 msgstr "Настройки"
 
 #: financez/templates/financez/index.html:15
-#: financez/templates/financez/settings.html:86
+#: financez/templates/financez/settings.html:84
 msgid "Results"
 msgstr "Итоги"
 
 #: financez/templates/financez/index.html:30
+#: financez/templates/financez/index.html:118
 #: financez/templates/financez/settings.html:30
 msgid "Planning"
 msgstr "Планирование"
 
 #: financez/templates/financez/index.html:40
+#: financez/templates/financez/index.html:122
 #: financez/templates/financez/settings.html:31
 msgid "Debts"
 msgstr "Долги"
 
 #: financez/templates/financez/index.html:54
+#: financez/templates/financez/index.html:126
 #: financez/templates/financez/settings.html:32
 msgid "Incomes"
 msgstr "Доходы"
 
 #: financez/templates/financez/index.html:56
+#: financez/templates/financez/index.html:114
 #: financez/templates/financez/settings.html:33
 msgid "Expenses"
 msgstr "Расходы"
@@ -161,6 +166,11 @@ msgstr "Сумма"
 msgid "Comment"
 msgstr "Комментарий"
 
+#: financez/templates/financez/index.html:110
+#: financez/templates/financez/settings.html:29
+msgid "Assets"
+msgstr "Активы"
+
 #: financez/templates/financez/reports.html:17
 msgid "update"
 msgstr "Обновить"
@@ -169,43 +179,40 @@ msgstr "Обновить"
 msgid "General"
 msgstr "Основные"
 
-#: financez/templates/financez/settings.html:29
-msgid "Assets"
-msgstr "Активы"
-
 #: financez/templates/financez/settings.html:55
 msgid "UI Language"
 msgstr "Язык интерфейса"
 
-#: financez/templates/financez/settings.html:75
+#: financez/templates/financez/settings.html:73
 msgid "Log out"
 msgstr "Выйти"
 
-#: financez/templates/financez/settings.html:82
+#: financez/templates/financez/settings.html:80
 msgid "Name"
 msgstr "Наименование"
 
-#: financez/templates/financez/settings.html:83
+#: financez/templates/financez/settings.html:81
 msgid "Parent"
 msgstr "Родитель"
 
-#: financez/templates/financez/settings.html:84
+#: financez/templates/financez/settings.html:82
 msgid "Order"
 msgstr "Порядок"
 
-#: financez/templates/financez/settings.html:85
+#: financez/templates/financez/settings.html:83
 msgid "Type"
 msgstr "Тип"
 
-#: financez/templates/financez/settings.html:100
-#: financez/templates/financez/settings.html:118
+#: financez/templates/financez/settings.html:98
+#: financez/templates/financez/settings.html:116
 msgid "Create"
 msgstr "Создать"
 
-#: financez/templates/financez/settings.html:108
+#: financez/templates/financez/settings.html:106
 msgid "Are you sure?"
 msgstr "Вы уверены?"
 
-#: financez/templates/financez/settings.html:109
+#: financez/templates/financez/settings.html:107
 msgid "Yes"
 msgstr "Да"
+

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-20 19:15+0000\n"
+"POT-Creation-Date: 2020-01-20 19:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -108,7 +108,7 @@ msgid "Settings"
 msgstr ""
 
 #: financez/templates/financez/index.html:15
-#: financez/templates/financez/settings.html:86
+#: financez/templates/financez/settings.html:84
 msgid "Results"
 msgstr ""
 
@@ -118,16 +118,19 @@ msgid "Planning"
 msgstr ""
 
 #: financez/templates/financez/index.html:40
+#: financez/templates/financez/index.html:122
 #: financez/templates/financez/settings.html:31
 msgid "Debts"
 msgstr ""
 
 #: financez/templates/financez/index.html:54
+#: financez/templates/financez/index.html:126
 #: financez/templates/financez/settings.html:32
 msgid "Incomes"
 msgstr ""
 
 #: financez/templates/financez/index.html:56
+#: financez/templates/financez/index.html:114
 #: financez/templates/financez/settings.html:33
 msgid "Expenses"
 msgstr ""
@@ -160,6 +163,15 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
+#: financez/templates/financez/index.html:110
+#: financez/templates/financez/settings.html:29
+msgid "Assets"
+msgstr ""
+
+#: financez/templates/financez/index.html:118
+msgid "Plans"
+msgstr ""
+
 #: financez/templates/financez/reports.html:17
 msgid "update"
 msgstr ""
@@ -168,43 +180,39 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: financez/templates/financez/settings.html:29
-msgid "Assets"
-msgstr ""
-
 #: financez/templates/financez/settings.html:55
 msgid "UI Language"
 msgstr ""
 
-#: financez/templates/financez/settings.html:75
+#: financez/templates/financez/settings.html:73
 msgid "Log out"
 msgstr ""
 
-#: financez/templates/financez/settings.html:82
+#: financez/templates/financez/settings.html:80
 msgid "Name"
 msgstr ""
 
-#: financez/templates/financez/settings.html:83
+#: financez/templates/financez/settings.html:81
 msgid "Parent"
 msgstr ""
 
-#: financez/templates/financez/settings.html:84
+#: financez/templates/financez/settings.html:82
 msgid "Order"
 msgstr ""
 
-#: financez/templates/financez/settings.html:85
+#: financez/templates/financez/settings.html:83
 msgid "Type"
 msgstr ""
 
-#: financez/templates/financez/settings.html:100
-#: financez/templates/financez/settings.html:118
+#: financez/templates/financez/settings.html:98
+#: financez/templates/financez/settings.html:116
 msgid "Create"
 msgstr ""
 
-#: financez/templates/financez/settings.html:108
+#: financez/templates/financez/settings.html:106
 msgid "Are you sure?"
 msgstr ""
 
-#: financez/templates/financez/settings.html:109
+#: financez/templates/financez/settings.html:107
 msgid "Yes"
 msgstr ""

@@ -39,7 +39,6 @@ $(function() {
     })
 
     $('#language-selector').change(function(event){
-
         $('#language-form').submit();
     })
 
