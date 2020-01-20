@@ -17,17 +17,17 @@ def add_subaccounts(acc_list, filtered_list):
     return result_tree
 
 
-def make_account_tree(section=None):
+def make_account_tree(user, section=None):
     if section:
         accounts = (
             Account.objects
-            .filter(results=section)
+            .filter(results=section, user=user)
             .values('pk', 'parent_id', 'name', 'order', 'acc_type', 'results')
             .order_by('order')
         )
         acc_list = [acc for acc in accounts]
         return add_subaccounts(acc_list, filter(lambda x: x['parent_id'] is None, acc_list))
     else:
-        accounts = Account.objects.all().values('pk', 'parent_id', 'name', 'order', 'results').order_by('order')
+        accounts = Account.objects.filter(user=user).values('pk', 'parent_id', 'name', 'order', 'results').order_by('order')
         acc_list = [acc for acc in accounts]
         return add_subaccounts(acc_list, filter(lambda x: x['parent_id'] is None, acc_list))

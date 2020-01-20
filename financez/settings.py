@@ -1,7 +1,7 @@
 import os
+from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 SECRET_KEY = 'l@6boni%5$tg*dzta%6fellmleoum4g*p-1#q64g3hi-0&1@!n'
 
@@ -17,7 +17,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'financez.apps.FinancezConfig'
+    'financez.apps.FinancezConfig',
+    'registration.apps.RegistrationConfig'
 ]
 
 MIDDLEWARE = [
@@ -59,23 +60,17 @@ DATABASES = {
 }
 
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+AUTH_PASSWORD_VALIDATORS = []
 
+LOGIN_REDIRECT_URL = LOGOUT_REDIRECT_URL = '/'
 
 LANGUAGE_CODE = 'en-us'
+
+LANGUAGES = [
+    ('en', _('English')),
+    # ('ru', _('Russian')),
+]
+
 
 TIME_ZONE = 'UTC'
 

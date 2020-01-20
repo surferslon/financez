@@ -1,6 +1,6 @@
 from django import forms
 from django.utils import timezone
-from .models import Entry, Account
+from .models import Entry, Account, Currency
 
 
 class DateInput(forms.DateInput):
@@ -21,6 +21,13 @@ class NewEntryForm(forms.ModelForm):
         self.fields['acc_dr'].widget.attrs.update({'hidden': ''})
         self.fields['acc_cr'].widget.attrs.update({'hidden': ''})
         self.fields['date'].initial = timezone.now()
+
+
+class NewCurForm(forms.ModelForm):
+
+    class Meta:
+        model = Currency
+        fields = ['name']
 
 
 class NewAccForm(forms.ModelForm):

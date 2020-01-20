@@ -1,5 +1,6 @@
 {% extends 'financez/base.html' %}
 {% load static %}
+{% load i18n %}
 
 
 {% block extra_styles %}
@@ -9,7 +10,8 @@
         #{{ sections.plans }} #menu-plans,
         #{{ sections.debts }} #menu-debts,
         #{{ sections.incomes }} #menu-incomes,
-        #{{ sections.expenses }} #menu-expenses
+        #{{ sections.expenses }} #menu-expenses,
+        #{{ sections.general }} #menu-general
         {
             border-left: 1px solid gray;
             font-weight: bold;
@@ -23,42 +25,95 @@
     <div class="row">
         <div id="acc-list" class="account-list" data-url="{% url 'change_field' %}">
             <div class="settings-menu" id="{{ section }}">
-                <a class="set-menu-item" href="{% url 'settings' sections.assets %}" id="menu-assets">Assets</a>
-                <a class="set-menu-item" href="{% url 'settings' sections.plans %}" id="menu-plans">Planning</a>
-                <a class="set-menu-item" href="{% url 'settings' sections.debts %}" id="menu-debts">Debts</a>
-                <a class="set-menu-item" href="{% url 'settings' sections.incomes %}" id="menu-incomes">Incomes</a>
-                <a class="set-menu-item" href="{% url 'settings' sections.expenses %}" id="menu-expenses">Expenses</a>
+                <a class="set-menu-item" href="{% url 'settings' 'general' %}" id="menu-general">{% trans 'General' %}</a>
+                <a class="set-menu-item" href="{% url 'settings' sections.assets %}" id="menu-assets">{% trans 'Assets' %}</a>
+                <a class="set-menu-item" href="{% url 'settings' sections.plans %}" id="menu-plans">{% trans 'Planning' %}</a>
+                <a class="set-menu-item" href="{% url 'settings' sections.debts %}" id="menu-debts">{% trans 'Debts' %}</a>
+                <a class="set-menu-item" href="{% url 'settings' sections.incomes %}" id="menu-incomes">{% trans 'Incomes' %}</a>
+                <a class="set-menu-item" href="{% url 'settings' sections.expenses %}" id="menu-expenses">{% trans 'Expenses' %}</a>
             </div>
 
-            <div class="acc-tree">
-                <div class="acc-tree-row-header">
-                    <div class="acc-tree-header">Name</div>
-                    <div class="acc-tree-header">Parent</div>
-                    <div class="acc-tree-header">Order</div>
-                    <div class="acc-tree-header">Type</div>
-                    <div class="acc-tree-header">Results</div>
-                    <button id="new-acc-button"> + </button>
+            {% if section == 'general' %}
+                <div class='settings-block'>
+                    <div class='settings-row'>
+                        <div>
+                            {% trans 'Currency' %}
+                            <a href='#' id="add-currency-button"> + </a>
+                        </div>
+                        <div class='currencies-list' data-url="{% url 'change_cur' %}">
+                            {% for cur in currencies %}
+                                <div class="currency-row" >
+                                    <div data-curid="{{ cur.id }}" class="cur-button {% if cur.selected %} font-bold {% endif %}" >
+                                        {{ cur }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class='settings-row'>
+                        <div>
+                            {% trans 'UI Language' %}
+                        </div>
+                        <div>
+                            {% get_available_languages as LANGUAGES %}
+                            <form action="/i18n/setlang/" method="post">
+                                {% csrf_token %}
+                                <input name="next" type="hidden" value="/" />
+                                <select name="language">
+                                    {% for lang in LANGUAGES %}
+                                        <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                              <!-- <input type="submit" value="Change" /> -->
+                        </div>
+
+                    </div>
+                    <div class="settings-row">
+                        <div>
+                            <a href="{% url 'logout' %}">{% trans 'Log out' %}</a>
+                        </div>
+                    </div>
                 </div>
-                {% include 'financez/account_settings.html' with account_list=account_list padding=0 %}
-            </div>
+            {% else %}
+                <div class="acc-tree">
+                    <div class="acc-tree-row-header">
+                        <div class="acc-tree-header">Name</div>
+                        <div class="acc-tree-header">Parent</div>
+                        <div class="acc-tree-header">Order</div>
+                        <div class="acc-tree-header">Type</div>
+                        <div class="acc-tree-header">Results</div>
+                        <button id="new-acc-button"> + </button>
+                    </div>
+                    {% include 'financez/account_settings.html' with account_list=account_list padding=0 %}
+                </div>
+            {% endif %}
 
         </div>
     </div>
 
-    <div id="modal-new-acc">
-        <form id="form-new-acc" method='post', action="{% url 'new_acc' %}">
+    <div class="settings-modal" id="modal-new-acc">
+        <form id="form-new-acc" method='post' action="{% url 'new_acc' %}">
             {% csrf_token %}
             {{ new_acc_form }}
-            <button style='margin-top: 20px; grid-column: 2/3'>Create</button>
+            <button class="modal-create-button">{% trans 'Create' %}</button>
         </form>
     </div>
 
-    <div id="modal-del-acc">
+    <div class='settings-modal' id="modal-del-acc">
         <form id="form-del-acc" method='post'>
             {% csrf_token %}
             <input name="section" value={{ section }} hidden />
-            <label>Are you sure?</label>
-            <button>Yes</button>
+            <label>{% trans 'Are you sure?' %}</label>
+            <button>{% trans 'Yes' %}</button>
+        </form>
+    </div>
+
+    <div class='settings-modal' id="modal-new-cur">
+        <form id="form-new-cur" method='post' action="{% url 'new_cur' %}">
+            {% csrf_token %}
+            {{ new_cur_form }}
+            <br>
+            <button>{% trans 'Create' %}</button>
         </form>
     </div>
 

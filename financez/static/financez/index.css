@@ -87,7 +87,7 @@
 #modal-account-list {
     display: none;
     position: absolute;
-    top: 200px;
+    top: 100px;
     width: 600px;
     height: 600px;
     margin-left: auto;

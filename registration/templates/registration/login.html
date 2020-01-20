@@ -1,0 +1,28 @@
+{% extends 'registration/base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="frame">
+        <div class="frame-header">Financez</div>
+
+        <form class="auth-form" method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <input  type="hidden" name="next" value="{{ next }}" />
+            {{ form.username }}
+            {{ form.password }}
+            <button type="submit" value="login">Log in</button>
+            <div class="error-list">
+                {% if form.errors %}
+                    Username or password is incorrect
+                {% endif %}
+            </div>
+        </form>
+
+    </div>
+
+    <div class="frame signup-frame">
+        <span>{% trans "Don't have an account?" %}</span>
+        <a href="{% url 'registration:signup' %}">{% trans 'Sign up' %}</a>
+    </div>
+
+{% endblock %}
