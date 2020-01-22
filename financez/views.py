@@ -40,6 +40,7 @@ class MainView(CreateView):
         context = super().get_context_data(**kwargs)
         today = datetime.now()
         user = self.request.user
+        context['form'].fields['currency'].queryset = Currency.objects.filter(user=user)
         try:
             currency = Currency.objects.get(user=user, selected=True)
         except Currency.DoesNotExist:
@@ -221,7 +222,10 @@ class NewCurView(CreateView):
     form_class = NewCurForm
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        user = self.request.user
+        form.instance.user = user
+        if not Currency.objects.filter(user=user).exists():
+            form.instance.selected = True
         return super().form_valid(form)
 
     def get_success_url(self, **kwargs):

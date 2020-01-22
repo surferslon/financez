@@ -1,5 +1,6 @@
 from django import forms
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from .models import Entry, Account, Currency
 
 
@@ -29,6 +30,10 @@ class NewCurForm(forms.ModelForm):
         model = Currency
         fields = ['name']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].label = _('Name')
+
 
 class NewAccForm(forms.ModelForm):
 
@@ -47,3 +52,8 @@ class NewAccForm(forms.ModelForm):
             self.fields['acc_type'].initial = Account.TYPE_ACTIVE
         else:
             self.fields['acc_type'].initial = Account.TYPE_PASSIVE
+        self.fields['name'].label = _('Name')
+        self.fields['acc_type'].label = _('Type')
+        self.fields['results'].label = _('Results')
+        self.fields['order'].label = _('Order')
+        self.fields['parent'].label = _('Parent')

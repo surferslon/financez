@@ -5,8 +5,8 @@ from django.utils.translation import gettext as _
 
 
 class Currency(models.Model):
-    name = models.CharField(verbose_name=_('name'), max_length=255)
-    selected = models.BooleanField(verbose_name=_('selected'), blank=True, default=False)
+    name = models.CharField(max_length=255)
+    selected = models.BooleanField(blank=True, default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
@@ -41,11 +41,11 @@ class Account(models.Model):
         (RESULT_DEBTS, _('debts')),
         (RESULT_PLANS, _('planning')),
     )
-    name = models.CharField(verbose_name=_('name'), max_length=255)
-    order = models.IntegerField(verbose_name=_('order'), blank=True, default=0)
-    parent = models.ForeignKey('self', verbose_name=_('parent'), related_name='child', on_delete=models.CASCADE, null=True, blank=True)
-    acc_type = models.CharField(verbose_name=_('type'), max_length=1, choices=ACC_TYPES, default=TYPE_ACTIVE)
-    results = models.CharField(verbose_name=_('results'), max_length=3, choices=RESULT_TYPES, null=True, blank=True)
+    name = models.CharField(max_length=255)
+    order = models.IntegerField(blank=True, default=0)
+    parent = models.ForeignKey('self', related_name='child', on_delete=models.CASCADE, null=True, blank=True)
+    acc_type = models.CharField(max_length=1, choices=ACC_TYPES, default=TYPE_ACTIVE)
+    results = models.CharField(max_length=3, choices=RESULT_TYPES, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
 
     def __str__(self):
