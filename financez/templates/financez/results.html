@@ -7,7 +7,7 @@
                 {{ result_row.acc__name }}
             {% endif %}
         </label>
-        <label>
+        <label class="results-text">
             {% if result_row.total < 0 %}
                 {{ result_row.total|floatformat:3|cut:'-' }}
             {% else %}
