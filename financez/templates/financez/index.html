@@ -13,40 +13,17 @@
 
             <div class="results-block">
                 <div class="results-header">{% trans 'Results' %}</div>
-                {% for result_row in results_queryset %}
-                    {% if result_row.acc__results == result_types.assets %}
-                        {% if not result_row.acc__parent %}
-                            <label> {{ result_row.acc__name }}</label>
-                            <label> {{ result_row.total|floatformat:3 }}</label>
-                        {% elif result_row.total %}
-                            <label style='opacity: 0.6'> {{ result_row.acc__name }}</label>
-                            <label style='opacity: 0.6'> {{ result_row.total|floatformat:3 }}</label>
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
+                {% include 'financez/results.html' with qs=results_queryset type=result_types.assets %}
             </div>
 
             <div class="results-block">
                 <div class="results-header">{% trans 'Planning' %}</div>
-                {% for result_row in results_queryset %}
-                    {% if result_row.acc__results == result_types.plans %}
-                        <label> {{ result_row.acc__name }}</label>
-                        <label> {{ result_row.total|floatformat:3 }}</label>
-                    {% endif %}
-                {% endfor %}
+                {% include 'financez/results.html' with qs=results_queryset type=result_types.plans %}
             </div>
 
             <div class="results-block">
                 <div class="results-header">{% trans 'Debts'%}</div>
-                {% for result_row in results_queryset %}
-                    {% if result_row.acc__results == result_types.debts and result_row.total != 0 %}
-                        {% widthratio result_row.total 1 -1 as total_debt %}
-                        <label>{{ result_row.acc__name }}</label>
-                        <label>{{ total_debt|floatformat:3 }} </label>
-                    {% endif %}
-                {% empty %}
-                    <label>-</label>
-                {% endfor %}
+                {% include 'financez/results.html' with qs=results_queryset type=result_types.debts %}
             </div>
 
             <div class="results-block">

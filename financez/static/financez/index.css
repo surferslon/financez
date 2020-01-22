@@ -9,11 +9,11 @@
 }
 .results-header {
     grid-column: 1/3;
-    font-weight: bold
+    font-weight: bold;
 }
 .results-block {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 75% 25%;
     grid-template-rows: 20px;
     grid-auto-rows: max-content;
     padding: 0px 10px 0px 10px;

@@ -62,17 +62,10 @@ class MainView(CreateView):
                 Q(acc__results=Account.RESULT_ASSETS) |
                 Q(acc__results=Account.RESULT_PLANS) |
                 Q(acc__results=Account.RESULT_DEBTS),
-                acc__child=None, currency=currency, acc__user=user)
-            .values('acc__name', 'acc__results', 'total', 'acc__parent').order_by('acc__order')
-        )
-        # results by groups
-        context['results_grouped_queryset'] = (
-            AccountBalance.objects.filter(
-                Q(acc__results=Account.RESULT_ASSETS) |
-                Q(acc__results=Account.RESULT_PLANS) |
-                Q(acc__results=Account.RESULT_DEBTS),
                 currency=currency, acc__user=user)
-            .exclude(acc__parent=None).values('acc__parent__name', 'acc__parent__results').annotate(total=Sum('total'))
+            .exclude(total=0)
+            .values('acc__name', 'acc__results', 'total', 'acc__parent__name', 'acc__parent__order')
+            .order_by('acc__order')
         )
         # results by month
         incomes_sum = Entry.objects.filter(
@@ -113,11 +106,18 @@ class ReportDataView(View):
         for entr in entries:
             group_date = f'{entr.date.year}.{entr.date.month}'
             if entr.acc_dr.results == Account.RESULT_EXPENSES:
-                acc_name = (
-                    f'exp:{entr.acc_dr.parent.name}'
-                    if group_by_parent
-                    else f'exp:{entr.acc_dr.parent.name}:{entr.acc_dr.name}'
-                )
+                if group_by_parent:
+                    acc_name = (
+                        f'exp:{entr.acc_dr.parent.name}'
+                        if entr.acc_dr.parent
+                        else f'exp:{entr.acc_dr.name}'
+                    )
+                else:
+                    acc_name = (
+                        f'exp:{entr.acc_dr.parent.name}:{entr.acc_dr.name}'
+                        if entr.acc_dr.parent
+                        else f'exp:{entr.acc_dr.name}'
+                    )
             else:
                 acc_name = f'inc:{entr.acc_cr.name}'
             group_dict = next((item for item in results if item['group_date'] == group_date), None)
@@ -192,8 +192,10 @@ class SettingsView(TemplateView):
             context['currencies'] = Currency.objects.filter(user=user)
             context['new_cur_form'] = NewCurForm
         context['account_list'] = make_account_tree(user, section)
-        context['available_parents'] = Account.objects.filter(results=section, parent=None, user=user).values('pk', 'name')
-        context['new_acc_form'] = NewAccForm(section=section)
+        context['available_parents'] = (
+            Account.objects.filter(results=section, parent=None, user=user).values('pk', 'name')
+        )
+        context['new_acc_form'] = NewAccForm(section=section, user=user)
         context['sections'] = {
             'general': 'general',
             'assets': Account.RESULT_ASSETS,

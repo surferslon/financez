@@ -1,0 +1,20 @@
+{% for result_row in qs %}
+    {% if result_row.acc__results == type %}
+        <label>
+            {% if result_row.acc__parent__name %}
+                {{ result_row.acc__parent__name }}: {{ result_row.acc__name }}
+            {% else %}
+                {{ result_row.acc__name }}
+            {% endif %}
+        </label>
+        <label>
+            {% if result_row.total < 0 %}
+                {{ result_row.total|floatformat:3|cut:'-' }}
+            {% else %}
+                {{ result_row.total|floatformat:3 }}
+            {% endif %}
+        </label>
+    {% endif %}
+{% empty %}
+    <label>-</label>
+{% endfor %}

@@ -79,8 +79,8 @@ class Entry(models.Model):
 
     def update_balance(self, acc):
         balance, new = AccountBalance.objects.get_or_create(acc=acc, currency=self.currency)
-        incomes = Entry.objects.filter(acc_dr=acc).aggregate(sum=Sum('total'))
-        expenses = Entry.objects.filter(acc_cr=acc).aggregate(sum=Sum('total'))
+        incomes = Entry.objects.filter(acc_dr=acc, currency=self.currency).aggregate(sum=Sum('total'))
+        expenses = Entry.objects.filter(acc_cr=acc, currency=self.currency).aggregate(sum=Sum('total'))
         balance.total = (incomes['sum'] or 0) - (expenses['sum'] or 0)
         balance.save()
 
