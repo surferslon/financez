@@ -1,3 +1,8 @@
+var show_entries = function(response) {
+    $('#report_entries').css('display', 'flex');
+    $('#report_entries').html(response);
+}
+
 var create_report = function(response) {
     var expenses_accs
     var incomes_accs
@@ -36,25 +41,20 @@ var create_report = function(response) {
             position: "outside",
             border: { visible: false },
             columnCount: 1,
-            // customizeItems: function(items) {
-            //     var sortedItems = [];
-            //     items.forEach(function (item) {
-            //         var startIndex = item.series.stack === "incomes" ? 0 : ExpIndex;
-            //         sortedItems.splice(startIndex, 0, item);
-            //     });
-            //     return sortedItems;
-            // }
         },
-        valueAxis: {
-        },
-        loadingIndicator: {
-            enabled: true
-        },
-        "export": {
-            enabled: false
-        },
-        onPointClick: function (e) {
+        valueAxis: { },
+        loadingIndicator: { enabled: true },
+        "export": { enabled: false },
+        onSeriesClick: function(e) {
             e.target.select();
+            let data_details_url = $('.demo-container').data('details-url')
+            $.get([
+                data_details_url,
+                '?category=', e.target.name,
+                '&period-from=', $('#period-from').val(),
+                '&period-to=', $('#period-to').val(),
+                '&group_details=', $('#group_details').is(':checked')
+            ].join(''), create_report_details)
         },
         tooltip: {
             enabled: true,
@@ -65,11 +65,68 @@ var create_report = function(response) {
     });
 }
 
+var create_report_details = function(response) {
+    $("#chart_details").parents('.dx-viewport').removeClass('dx_hidden');
+    $("#chart_details").dxChart({
+        palette: "soft",
+        dataSource: response.results,
+        commonSeriesSettings: {
+            barPadding: 0.5,
+            argumentField: "group_date",
+            type: "bar",
+            label: {
+                visible: true,
+                format: {
+                    type: "fixedPoint",
+                    precision: 3,
+                }
+            }
+        },
+        series: response.accounts,
+        legend: {
+            horizontalAlignment: "left",
+            verticalAlignment: "top",
+        },
+        onPointClick: function(e) {
+            e.target.select()
+            acc_id = e.target.series.getValueFields()[0]
+            let report_entries_url = $('#report_entries').data('entries-url')
+            if ($('#group_details').is(':checked') || e.target.originalArgument == 'Total') {
+                url = [
+                report_entries_url,
+                    '?acc_id=', acc_id,
+                    '&period-from=', $('#period-from').val(),
+                    '&period-to=', $('#period-to').val(),
+                ].join('')
+            }
+            else {
+                url = [
+                    report_entries_url,
+                    '?acc_id=', acc_id,
+                    '&month=', e.target.originalArgument
+                ].join('')
+            }
+            $.get(url, show_entries)
+        },
+        title: { text: response.title, },
+    });
+}
+
 $(function() {
     let data_url = $('.demo-container').data('url')
-    $.get(data_url, create_report );
+    $.get(data_url, create_report);
     $('#update-report').click(function(event){
-        $.get([data_url, '?period-from=', $('#period-from').val(), '&period-to=', $('#period-to').val()].join(''), create_report );
+        $.get([
+            data_url,
+            '?period-from=', $('#period-from').val(),
+            '&period-to=', $('#period-to').val(),
+            '&group_all=', $('#group_all').is(":checked")
+        ].join(''), create_report );
     })
+    $('#modal-background').click(function(event) {
+        $('#modal-background').css('display', 'none');
+        $('#report_details').css('display', 'none');
+        $('body').css('overflow', 'auto');
+    });
 });
 

@@ -8,6 +8,7 @@ django = "==3.0"
 xlrd = "==1.2.0"
 
 [dev-packages]
+ipdb = "*"
 
 [requires]
 python_version = "3.7"

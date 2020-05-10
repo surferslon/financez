@@ -20,11 +20,11 @@
                 <div class="logo-wrapper">
                     <img style="height: 35px;" src="{% static 'financez/logo.png' %}"/>
                 </div>
-                <a href="{% url 'main_book' %}" class="menu-item">
-                    {% trans 'Main'%}
+                <a href="{% url 'main' %}" class="menu-item">
+                    {% trans 'Main' %}
                 </a>
-                <a href="{% url 'reports' %}" class="menu-item">
-                    {% trans 'Reports' %}
+                <a href="{% url 'entries' %}" class="menu-item">
+                    {% trans 'Entries'%}
                 </a>
                 <a href="{% url 'settings' 'general'  %}" class="menu-item">
                     {% trans 'Settings' %}

@@ -9,37 +9,6 @@
 {% block content %}
 
     <div class="row">
-        <div class="results">
-
-            <div class="results-block">
-                <div class="results-header">{% trans 'Results' %}</div>
-                {% include 'financez/results.html' with qs=results_queryset type=result_types.assets %}
-            </div>
-
-            <div class="results-block">
-                <div class="results-header">{% trans 'Planning' %}</div>
-                {% include 'financez/results.html' with qs=results_queryset type=result_types.plans %}
-            </div>
-
-            <div class="results-block">
-                <div class="results-header">{% trans 'Debts'%}</div>
-                {% include 'financez/results.html' with qs=results_queryset type=result_types.debts %}
-            </div>
-
-            <div class="results-block">
-                <div class="results-header">{{ current_month|date:"M Y" }}</div>
-                <span>{% trans 'Incomes' %}</span>
-                <span>{{ incomes_sum|floatformat:3 }}</span>
-                <span>{% trans 'Expenses' %}</span>
-                <span>{{ expenses_sum|floatformat:3 }} </span>
-                <span>{% trans 'Result' %}</span>
-                <span>{{ month_result|floatformat:3 }} </span>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="row">
         <form method="POST" class="new-entry-form">
             {% csrf_token %}
             {{ form.date }}
