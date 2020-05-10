@@ -1,9 +1,10 @@
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from django.views import View
 from django.views.generic import CreateView, TemplateView
 from django.views.generic.edit import DeleteView
+from django.template.response import TemplateResponse
 from django.http import JsonResponse, HttpResponse
-from django.db.models import Q, Sum
+from django.db.models import Q, F, Sum
 from django.urls import reverse
 from .models import Entry, Account, AccountBalance, Currency
 from .forms import NewEntryForm, NewAccForm, NewCurForm
@@ -102,9 +103,12 @@ class ReportsView(TemplateView):
 
 class ReportDataView(View):
 
-    def calculate_results(self, results, entries, group_by_parent):
+    def calculate_results(self, results, entries, group_by_parent, group_all):
         for entr in entries:
-            group_date = f'{entr.date.year}.{entr.date.month}'
+            if group_all:
+                group_date = 'Total'
+            else:
+                group_date = f'{entr.date.year}.{entr.date.month}'
             if entr.acc_dr.results == Account.RESULT_EXPENSES:
                 if group_by_parent:
                     acc_name = (
@@ -129,6 +133,7 @@ class ReportDataView(View):
     def get(self, request, *args, **kwargs):
         today = datetime.now()
         group_by_parent = True
+        group_all = True if request.GET.get('group_all') == "true" else False
         period_from = request.GET.get('period-from', date(today.year, 1, 1))
         period_to = request.GET.get('period-to', today)
         user = request.user
@@ -155,8 +160,8 @@ class ReportDataView(View):
             .order_by('date')
         )
         results = []
-        self.calculate_results(results, qs_exp, group_by_parent)
-        self.calculate_results(results, qs_inc, group_by_parent)
+        self.calculate_results(results, qs_exp, group_by_parent, group_all)
+        self.calculate_results(results, qs_inc, group_by_parent, group_all)
         inc_accounts = [
             f'inc:{acc["name"]}' for acc in
             Account.objects.filter(results=Account.RESULT_INCOMES, user=user).values('name')
@@ -180,6 +185,83 @@ class ReportDataView(View):
             safe=False
         )
 
+
+class ReportDetailsView(View):
+
+    def get(self, request, *args, **kwargs):
+        category = request.GET.get('category')
+        results, category = category.split(':')
+        try:
+            parent_acc = Account.objects.get(name=category, results=results)
+        except Account.DoesNotExist:
+            parent_acc = Account.objects.get(name__contains=category, results=results)
+        today = datetime.now()
+        period_from = request.GET.get('period-from', date(today.year, 1, 1))
+        period_to = request.GET.get('period-to', today)
+        if isinstance(period_from, str):
+            period_from = datetime.strptime(period_from, "%Y-%m-%d")
+        if isinstance(period_to, str):
+            period_to = datetime.strptime(period_to, "%Y-%m-%d")
+        params = {
+            'currency': Currency.objects.get(user=request.user, selected=True),
+            'user': request.user,
+            'date__gte': period_from,
+            'date__lte': period_to
+        }
+        if results == 'exp':
+            qs = Entry.objects.filter(
+                Q(acc_dr__parent=parent_acc) | Q(acc_dr=parent_acc), **params
+            ).annotate(acc_name=F('acc_dr__name'), acc_id=F('acc_dr__id'))
+        else:
+            qs = Entry.objects.filter(
+                Q(acc_cr__parent=parent_acc) | Q(acc_cr=parent_acc), **params
+            ).annotate(acc_name=F('acc_cr__name'), acc_id=F('acc_cr__id'))
+        results = []
+        accounts = []
+        iter_date = period_from
+        while iter_date < period_to:
+            group_date = f'{iter_date.year}.{iter_date.month}'
+            group_dict = next((item for item in results if item['group_date'] == group_date), None)
+            if not group_dict:
+                results.append({'group_date': group_date})
+            iter_date = iter_date.replace(month=iter_date.month + 1, day=1)
+        for entry in qs:
+            group_date = f'{entry.date.year}.{entry.date.month}'
+            group_dict = next((item for item in results if item['group_date'] == group_date), None)
+            group_dict[entry.acc_id] = entry.total + group_dict.get(entry.acc_id, 0)
+            if entry.acc_id not in accounts:
+                accounts.append(entry.acc_id)
+        accounts = [{'valueField': acc.id, 'name': acc.name} for acc in Account.objects.filter(id__in=accounts)]
+        return JsonResponse({'title': parent_acc.name, 'results': results, 'accounts': accounts}, safe=False)
+
+
+class ReportEntriesView(View):
+
+    def get(self, request, *args, **kwargs):
+        acc_id = request.GET.get('acc_id')
+        acc = Account.objects.get(id=acc_id)
+        today = datetime.now()
+        period_from = request.GET.get('period-from', date(today.year, 1, 1))
+        period_to = request.GET.get('period-to', today)
+        if isinstance(period_from, str):
+            period_from = datetime.strptime(period_from, "%Y-%m-%d")
+        if isinstance(period_to, str):
+            period_to = datetime.strptime(period_to, "%Y-%m-%d")
+        params = {
+            'currency': Currency.objects.get(user=request.user, selected=True),
+            'user': request.user,
+            'date__gte': period_from,
+            'date__lte': period_to
+        }
+        qs = Entry.objects.filter(Q(acc_cr=acc) | Q(acc_dr=acc), **params).order_by('-date')
+        return TemplateResponse(
+            request,
+            'financez/report_entries.html',
+            {
+                'entries': qs,
+                'total_sum': qs.aggregate(Sum('total'))['total__sum']
+            }
+        )
 
 class SettingsView(TemplateView):
     template_name = 'financez/settings.html'

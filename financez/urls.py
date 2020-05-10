@@ -12,6 +12,8 @@ urlpatterns = [
 
     path('reports/', login_required(views.ReportsView.as_view()), name='reports'),
     path('report_data/', login_required(views.ReportDataView.as_view()), name='report_data'),
+    path('report_details/', login_required(views.ReportDetailsView.as_view()), name='report_details'),
+    path('report_entries/', login_required(views.ReportEntriesView.as_view()), name='report_entries'),
     path('settings/<str:section>', login_required(views.SettingsView.as_view()), name='settings'),
     path('change_field', login_required(views.change_field), name='change_field'),
     path('newacc/', login_required(views.NewAccView.as_view()), name='new_acc'),

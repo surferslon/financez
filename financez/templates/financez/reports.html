@@ -9,17 +9,33 @@
 
 
 {% block content %}
+
+    <div class="report_block settings">
+        <input id="period-from" name="period-from" type="date" value={{ period_from }}>
+        <lbael> - </lbael>
+        <input id="period-to" name="period-to" type="date" value={{ period_to }}>
+        <input type="checkbox" name="group_all" id="group_all">
+        <label for="group_all">Group all</label>
+        <button id="update-report"> {% trans 'update' %} </button>
+    </div>
+
     <div class="dx-viewport">
         <div class="period">
-            <input id="period-from" name="period-from" type="date" value={{ period_from }}>
-            <lbael> - </lbael>
-            <input id="period-to" name="period-to" type="date" value={{ period_to }}>
-            <button id="update-report"> {% trans 'update' %} </button>
         </div>
-        <div class="demo-container" data-url="{% url 'report_data' %}" >
+        <div class="demo-container" data-url="{% url 'report_data' %}" data-details-url="{% url 'report_details' %}">
             <div id="chart" style="height: 750px"></div>
         </div>
     </div>
+
+    <div class="dx-viewport dx_hidden">
+        <div class="demo-container">
+            <div id="chart_details"></div>
+        </div>
+    </div>
+
+    <div class="report_block" id="report_entries" data-entries-url="{% url 'report_entries' %}">
+    </div>
+
 {% endblock %}
 
 
